@@ -5,7 +5,7 @@
 - **Fuentes normativas de referencia:** MDR (UE) 2017/745, RD 192/2023, guías MDCG,
   normas UNE-EN/ISO/IEC, RGPD (UE) 2016/679 + LOPDGDD, AI Act (UE) 2024/1689.
 - **Fecha del contraste normativo en internet:** {AAAA-MM-DD}
-- **Puntos verificados en internet:** {lista: EUDAMED, normas armonizadas DOUE, guías MDCG, AI Act, AEPD apps salud, NIS2 España… con URL}. {o "ninguno: producto sin datos personales ni finalidad sanitaria"}
+- **Puntos verificados en internet:** {lista: EUDAMED, normas armonizadas DOUE, guías MDCG, AI Act, AEPD apps salud, NIS2 España, decisiones de adecuación + EU-US Data Privacy Framework, SBOM/MDCG 2019-16 + Cyber Resilience Act… con URL}. {o "ninguno: producto sin datos personales ni finalidad sanitaria"}
 
 > **Aviso.** Documento orientativo de planificación. No sustituye asesoría legal o
 > regulatoria. La clasificación vinculante y la evaluación de conformidad las
@@ -42,8 +42,13 @@
 - Aplicación del test de calificación: {las 3 condiciones, cumplida/no}
 - Casos frontera considerados: {…}
 - **Conclusión:** {…} 
+- **Entregable:** análisis de calificación por escrito — **obligatorio aunque la
+  conclusión sea NO** (lo exige una inspección de AEMPS / el organismo
+  notificado). Estado en el repo: {presente / ausente en `docs/regulatory/`}.
 - Si NO es PS: normativa que sigue aplicando → {RGPD, ISO/IEC 82304-1, directrices
-  AEPD apps de salud}. **Fin del análisis de producto sanitario.**
+  AEPD apps de salud} + secciones 7.2-7.5 de este informe (entregables de datos,
+  transferencias, SBOM si hay datos personales). **Fin del análisis de producto
+  sanitario.**
 
 ---
 
@@ -118,38 +123,95 @@ Detalle que sustenta los veredictos de la sección 5. Para cada bloque:
 ### 6.6 Información al usuario (ISO 20417 / RD 192/2023)
 {…}
 
+### 6.7 SBOM y gestión de vulnerabilidades de dependencias
+- **¿SBOM obligatorio aquí?** {sí de facto — MDCG 2019-16 + IEC 81001-5-1 + RGSF Anexo I.17 / sí por CRA / sí por RGPD 32 / recomendado} — **motivo:** {…}
+- **¿Gestión de vulnerabilidades obligatoria?** {sí/…} — **motivo:** {…}
+- **Inventario de dependencias** (de `supply_chain.dependency_counts` / `manifests`):
+  | Manifiesto | Nº deps directas (aprox.) | ¿Versiones fijadas (lockfile)? |
+  |---|---|---|
+  | {…} | {…} | {sí/no} |
+- **Estado actual:**
+  | Elemento | Estado | Evidencia (`fichero`) |
+  |---|---|---|
+  | SBOM generado (CycloneDX/SPDX) | {presente/ausente} | {supply_chain.sbom_files} |
+  | SCA / cribado CVE en CI (Dependabot, Renovate, Trivy, osv-scanner…) | {…} | {supply_chain.sca_config} |
+  | Política de divulgación coordinada (CVD) | {…} | {SECURITY.md / security.txt} |
+  | VEX | {…} | {…} |
+- **Recomendación concreta:** generar SBOM con `{comando según stack}`; cribar con `{herramienta}`; añadir `SECURITY.md` si falta. Regenerar el SBOM por *release* y entregarlo al organismo notificado por versión.
+- **Brechas:** {…}
+
 ---
 
-## 7. Protección de datos (RGPD / LOPDGDD) y vulnerabilidades
+## 7. Protección de datos (RGPD / LOPDGDD), entregables, transferencias y vulnerabilidades
 
 ### 7.1 Bases jurídicas propuestas
 | Finalidad | Base art. 6 | Excepción art. 9 |
 |---|---|---|
 | {…} | {…} | {…} |
 
-### 7.2 Checklist de obligaciones
+### 7.2 Entregables de datos y seguridad — ¿cuál debe generar este proyecto?
+**Leyenda:** obligatorio 🔴 · recomendado 🟠 · no aplica ⚪ · estado: presente / parcial / ausente.
+
+| # | Documento | ¿Obligatorio aquí? | Base | Estado | Cómo se genera / quién lo pide |
+|---|---|---|---|---|---|
+| 1 | Análisis de calificación (incl. "no es PS") | {} | MDCG 2019-11 | {} | Interno · AEMPS / ON |
+| 2 | Análisis de riesgos del tratamiento | {} | RGPD 24, 32 | {} | Interno + DPO · guía/herramienta AEPD |
+| 3 | DPIA / EIPD | {} | RGPD 35 | {} | Interno + DPO · consulta previa AEPD (36) si riesgo alto no mitigable |
+| 4 | RAT | {} | RGPD 30 | {} | Interno · plantilla AEPD |
+| 5 | DPA / contrato de encargado (uno por proveedor) | {} | RGPD 28 | {} | Contrato con cada encargado (+ CCT/TIA si fuera del EEE) — proveedores: {…} |
+| 6 | Procedimiento + registro de brechas | {} | RGPD 33-34 | {} | Interno · AEPD (formulario NBD, 72 h) |
+| 7 | TIA (una por transferencia vía art. 46) | {} | Schrems II · EDPB 01/2020 | {} | Interno — ver 7.5 |
+| 8 | Cláusulas informativas / privacidad en capas | {} | RGPD 12-14 | {} | Interno |
+| 9 | Nota de transparencia sobre uso de IA | {} | RGPD 13-14/22 · AI Act 13/50 | {} | Interno · integrada en IFU · AESIA/AEPD |
+| 10 | Designación de DPO | {} | RGPD 37-39 · LOPDGDD 34 | {} | Nombramiento + comunicación a la AEPD |
+| 11 | SBOM | {} | MDCG 2019-16 · IEC 81001-5-1 · (CRA) | {} | Ver 6.7 |
+| 12 | Gestión de vulnerabilidades + VEX + CVD | {} | ídem · RGPD 32 | {} | Ver 6.7 |
+
+Para cada documento 🔴: *"Qué es: … · Cómo se genera: …"*.
+
+### 7.3 Checklist de obligaciones RGPD (detalle)
 | Obligación | Estado | Nota |
 |---|---|---|
-| EIPD/DPIA | {exigible: sí/no} · {hecha/no} | {…} |
+| Análisis de riesgos del tratamiento | {hecho/no} | {nivel de riesgo → ¿escala a DPIA?} |
+| EIPD/DPIA | {exigible: sí/no} · {hecha/no} | {motivo de exigibilidad} |
 | RAT | {…} | |
-| Contratos de encargado (art. 28) | {…} | {proveedores: …} |
-| Transferencias internacionales | {…} | {…} |
+| Contratos de encargado / DPA (art. 28) | {…} | {proveedores sin DPA: …} |
+| Transferencias internacionales | {…} | {ver 7.5} |
 | Privacidad desde el diseño/por defecto | {…} | |
 | Seguridad (art. 32) | {…} | |
-| Gestión de brechas (33-34) | {…} | |
+| Gestión de brechas (33-34) — procedimiento previo + registro | {…} | |
 | DPO | {obligatorio: sí/no} | |
 | Información y derechos | {…} | |
+| Transparencia sobre IA (13-14/22) | {…} | {si hay IA} |
 | Menores / investigación en salud | {…} | |
 | Ley 41/2002 (si historia clínica) | {…} | |
 
-### 7.3 Vulnerabilidades detectadas (priorizadas)
+### 7.4 Vulnerabilidades detectadas (priorizadas)
 | # | Severidad | Categoría | Ubicación | Descripción | Norma afectada | Remediación |
 |---|---|---|---|---|---|---|
-| 1 | {Crítica/Alta/Media} | {secreto / TLS / log PII / inyección / tercero / cifrado reposo} | {fichero:línea} | {…} | {RGPD 32 / IEC 81001-5-1 / …} | {…} |
+| 1 | {Crítica/Alta/Media} | {secreto / TLS / log PII / inyección / tercero / cifrado reposo / dependencia con CVE} | {fichero:línea} | {…} | {RGPD 32 / IEC 81001-5-1 / …} | {…} |
 
-### 7.4 Conclusión de datos
+### 7.5 Transferencias internacionales y flujos de datos
+**¿Salen datos personales del EEE?** {sí/no} — {resumen: regiones no europeas, proxies/CDNs, APIs de IA, terceros}.
+
+| Flujo | Datos personales | Proveedor / componente | Rol | País / región | ¿Sale del EEE? | Mecanismo cap. V | ¿TIA? | Estado / brecha |
+|---|---|---|---|---|---|---|---|---|
+| Hosting de la aplicación | Todos | {} | Encargado | {} | {sí/no} | {adecuación / CCT+TIA / DPF} | {sí/no/hecho/n.a.} | {} |
+| Base de datos / almacenamiento | Todos | {} | Encargado | {} | {} | {} | {} | {} |
+| *Backup* / réplica | Todos | {} | Subencargado | {} | {} | {} | {} | {} |
+| API de IA / LLM | {campos enviados} | {} | Encargado | {EE. UU. asumido} | {} | {} | {} | {} |
+| Analítica / *crash reporting* / APM | Identificadores, IP, trazas | {} | Encargado | {} | {} | {} | {} | {} |
+| CDN / proxy / WAF | IP, cabeceras, contenido | {} | Encargado | {} | {} | {} | {} | {} |
+| Correo / SMS / *push* | Contacto, contenido | {} | Encargado | {} | {} | {} | {} | {} |
+
+- **Decisiones de adecuación / EU-US Data Privacy Framework** (verificado {fecha} · {URL}): {…}
+- **Flujos sin cobertura del cap. V (brecha crítica):** {…}
+- **Acciones:** {repatriar a región europea / firmar CCT + TIA / verificar adhesión al DPF del proveedor X / suprimir flujo}.
+
+### 7.6 Conclusión de datos
 - ¿DPIA exigible? {sí/no + motivo}. ¿Consulta previa AEPD? {…}
 - Datos de salud a terceros / IA como servicio: {…}
+- Documentos que faltan y son obligatorios: {lista destilada de 7.2}.
 
 ---
 
@@ -177,9 +239,12 @@ Detalle que sustenta los veredictos de la sección 5. Para cada bloque:
 
 | Fase | Acción | Entregable | Organismo | Prioridad |
 |---|---|---|---|---|
-| 0 | Congelar finalidad prevista y clasificación por escrito | Documento de determinación | interno | Inmediata |
-| 1 | {…} | {…} | {…} | {…} |
-| … | | | | |
+| 0 | Congelar finalidad prevista y clasificación por escrito | Análisis de calificación + determinación de clase | interno | Inmediata |
+| 0 | Cerrar brechas de datos obligatorias sin coste de certificación | RAT, análisis de riesgos del tratamiento, DPA pendientes, procedimiento de brechas, cláusulas informativas | interno / AEPD | Inmediata |
+| 0 | Resolver transferencias fuera del EEE sin cobertura | TIA / CCT / repatriación de flujos | interno | Inmediata |
+| 1 | {DPIA si exigible} | {EIPD + consulta previa AEPD si procede} | {AEPD} | {Alta} |
+| 1 | {Generar SBOM + activar SCA en CI + CVD} | {SBOM CycloneDX + informe SCA + SECURITY.md} | {interno; el ON lo audita} | {Alta} |
+| … | {…} | {…} | {…} | {…} |
 
 **Estimación de coste/tiempo** (orientativa de mercado, confirmar con CNCps/
 consultora): {clase I → interno; IIa-III → tasas CNCps ~22-27 k€, proyecto total

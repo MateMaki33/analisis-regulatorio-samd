@@ -7,7 +7,9 @@ normativa de **producto sanitario** (SaMD / MDSW) en España y la UE.
 
 1. Escanea el repositorio (script sin dependencias) y produce un JSON de señales:
    dominio clínico, datos personales y de categoría especial (RGPD art. 9), uso de
-   IA/ML, terceros receptores de datos y vulnerabilidades de seguridad.
+   IA/ML, terceros receptores de datos, vulnerabilidades de seguridad,
+   **infraestructura y salida de datos del EEE** (regiones cloud, proxies, CDNs) y
+   **cadena de suministro** (dependencias, lockfiles, SBOM, SCA en CI, CVD).
 2. Aplica el test de **calificación** (MDCG 2019-11): ¿es producto sanitario?
 3. **Clasifica** por riesgo (Regla 11, Anexo VIII MDR): I / IIa / IIb / III, y
    asigna la clase de seguridad IEC 62304 (A / B / C).
@@ -24,6 +26,13 @@ normativa de **producto sanitario** (SaMD / MDSW) en España y la UE.
    / ⬜ No evaluable — con evidencia (`fichero:línea`), brecha concreta y **cómo se
    gestiona** (proceso · organismo · entregable · plazo). Incluye requisitos
    técnicos, RGPD (+ lista de vulnerabilidades) y AI Act.
+6b. Determina **qué entregables de datos y seguridad debe generar** el proyecto y
+   si son obligatorios (análisis de calificación —incl. "no es PS"—, análisis de
+   riesgos del tratamiento, DPIA/EIPD, RAT, DPA/art. 28, procedimiento de brechas,
+   TIA, nota de transparencia de IA, DPO), qué es cada uno y cómo se genera;
+   construye la **tabla de flujos de datos** (¿salen del EEE?, mecanismo del
+   cap. V, ¿TIA?); y decide si el **SBOM** y la **gestión de vulnerabilidades**
+   son obligatorios, con inventario de dependencias y comando de generación.
 7. Ordena las brechas en una **ruta a la conformidad** por fases.
 8. Redacta un **informe de situación** en Markdown (`assets/plantilla-informe.md`)
    y lo entrega al usuario.
@@ -39,6 +48,9 @@ references/
   requisitos-tecnicos.md         Qué exige cada norma y cómo se acredita
   evaluacion-cumplimiento.md     Rúbrica: veredicto por norma + cómo se gestiona
   rgpd-datos.md                  Obligaciones RGPD + catálogo de vulnerabilidades
+  entregables-datos-y-seguridad.md  Qué documento generar y si es obligatorio
+  transferencias-internacionales.md Datos fuera del EEE (Cap. V) + proxies/CDN
+  sbom-vulnerabilidades.md       Qué es el SBOM, cuándo obliga, cómo generarlo
   ia-aiact.md                    Reglamento (UE) 2024/1689 para SaMD con IA
   checkpoints-volatiles.md       Lista de contraste web (qué verificar y dónde)
 assets/plantilla-informe.md      Plantilla del informe de situación
@@ -50,7 +62,7 @@ assets/plantilla-informe.md      Plantilla del informe de situación
   puñado de ficheros citados como evidencia.
 - Cada `references/*.md` se carga solo al llegar a su paso.
 - El contraste web es obligatorio pero **acotado**: lista cerrada de consultas
-  (`checkpoints-volatiles.md`), una por punto, ~8 máximo, fuentes oficiales, con
+  (`checkpoints-volatiles.md`), una por punto, ~10 máximo, fuentes oficiales, con
   URL y fecha en el informe.
 
 ## Limitaciones

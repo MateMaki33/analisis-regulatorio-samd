@@ -131,7 +131,11 @@ esperado; 13485 no es obligatorio pero sí muy recomendable.
 ## 6. Normativa horizontal (se aplica EN PARALELO al MDR)
 
 ### RGPD (UE 2016/679) + LOPDGDD (LO 3/2018) — OBLIGATORIA si hay datos personales
-Detalle y detección de vulnerabilidades en `rgpd-datos.md`.
+Detalle y detección de vulnerabilidades en `rgpd-datos.md`. Entregables y su
+obligatoriedad (calificación, análisis de riesgos, DPIA, RAT, DPA, brechas, TIA,
+transparencia de IA, DPO) en `entregables-datos-y-seguridad.md`. Transferencias
+fuera del EEE (regiones cloud, proxies, CDNs, APIs de IA) en
+`transferencias-internacionales.md`.
 - **Implica (datos de salud = art. 9):** base jurídica del art. 6 + levantamiento
   de la prohibición del art. 9 (normalmente 9.2.a consentimiento explícito o
   9.2.h asistencia sanitaria por profesional sujeto a secreto); **EIPD/DPIA**
@@ -161,7 +165,11 @@ ciberseguridad. La evaluación de conformidad de IA se **integra** en la del MDR
 Productos con elementos digitales. Los PS ya cubiertos por los requisitos de
 ciberseguridad del MDR quedan, en principio, **fuera** del alcance directo para
 evitar duplicidad. Revisar si algún componente NO califica como PS (queda fuera
-del MDR y podría caer bajo el CRA).
+del MDR y podría caer bajo el CRA): en ese caso, **SBOM y gestión de
+vulnerabilidades pasan a ser obligación legal** (no solo de facto), con
+notificación de vulnerabilidades explotadas activamente a ENISA/CSIRT. Fechas de
+aplicación escalonadas hasta **11-dic-2027** (verificar — checkpoint 12). Detalle
+en `sbom-vulnerabilidades.md`.
 
 ### Directiva (UE) 2022/2555 (NIS2) — CONDICIONAL (nivel organización, no producto)
 Obliga a **entidades esenciales/importantes** del sector salud (según tamaño y

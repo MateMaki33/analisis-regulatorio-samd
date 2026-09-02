@@ -1,18 +1,20 @@
 ---
 name: analisis-regulatorio-samd
 description: >-
-  Analiza un proyecto de software para determinar si es un producto sanitario
-  (SaMD / MDSW) bajo el Reglamento (UE) 2017/745 (MDR), su clase de riesgo (I,
-  IIa, IIb, III), la clase de seguridad IEC 62304, la normativa aplicable (MDR,
-  RGPD/LOPDGDD, AI Act, ciberseguridad, evaluación clínica), los organismos
-  implicados (AEMPS, CNCps/organismo notificado, AEPD, EUDAMED) y, norma por
-  norma, cuáles cumple, cuáles no y cómo se gestiona cada una. Detecta además
-  vulnerabilidades de datos sensibles y RGPD. Contrasta el estado normativo
-  vigente en internet (fuentes oficiales) porque cambia con frecuencia. Produce
-  un informe de situación en Markdown. Úsala cuando el usuario pida evaluar el
-  estado regulatorio, la clasificación como producto sanitario, el cumplimiento
-  MDR / RGPD / Reglamento de IA, la ruta a marcado CE, o los riesgos de datos de
-  salud de un proyecto (España / UE).
+  Analiza un proyecto de software frente al Reglamento (UE) 2017/745 (MDR): si es
+  producto sanitario (SaMD / MDSW), su clase de riesgo (I, IIa, IIb, III), la
+  clase de seguridad IEC 62304, la normativa aplicable (MDR, RGPD/LOPDGDD, AI Act,
+  ciberseguridad, evaluación clínica), los organismos implicados y, norma por
+  norma, qué cumple y cómo se gestiona. Indica qué entregables de datos y
+  seguridad debe generar y qué es cada uno (calificación, análisis de riesgos del
+  tratamiento, DPIA, RAT, contratos de encargado, brechas, TIA, transparencia de
+  IA, SBOM), analiza las dependencias y detecta si los datos salen del EEE
+  (regiones no europeas, proxies, CDNs, APIs de IA) y con qué cobertura del
+  capítulo V del RGPD. Contrasta la normativa vigente en fuentes oficiales y
+  produce un informe en Markdown. Úsala para evaluar el estado regulatorio de un
+  proyecto en España / UE: clasificación, cumplimiento MDR/RGPD/IA, ruta a
+  marcado CE, entregables de protección de datos, transferencias internacionales
+  o SBOM.
 ---
 
 # Análisis regulatorio de software sanitario (SaMD) — España / UE
@@ -36,14 +38,20 @@ internet** el estado vigente antes de concluir.
 
 - **No leas el repositorio entero.** Ejecuta el escáner y trabaja sobre su JSON.
   Lee, como mucho, ~10 ficheros: README/manifiestos + los ficheros citados en
-  `findings` que sean decisivos para clasificar o para una vulnerabilidad.
+  `findings` que sean decisivos para clasificar o para una vulnerabilidad. Para
+  el análisis de transferencias internacionales puedes añadir 3-5 ficheros de
+  configuración de infraestructura (`.env` / `.env.example`, `docker-compose*`,
+  IaC `*.tf`, `config/`, `helm/`).
+- **Dependencias:** trabaja sobre `manifests` y `supply_chain` del JSON (cuentas
+  y ficheros ya detectados). **No** instales herramientas ni ejecutes escaneos de
+  SBOM/CVE — recomiéndalos en el informe.
 - **Carga cada fichero de `references/` solo al llegar a su paso.** No los
   precargues todos.
 - **Web: sí, pero acotada.** El estado normativo cambia rápido, así que hay que
   contrastarlo (paso 5). Reglas: usa la lista cerrada de consultas de
   `references/checkpoints-volatiles.md`, **una búsqueda por punto**, prioriza
   fuentes oficiales (EUR-Lex, BOE, AEMPS, health.ec.europa.eu, AEPD, CCN-CNI,
-  AESIA), y **cita URL + fecha de consulta** en el informe. No abras más de ~8
+  AESIA), y **cita URL + fecha de consulta** en el informe. No abras más de ~10
   búsquedas en total. Si una consulta no aporta nada más reciente, usa el dato
   incorporado y decláralo como "sin cambios verificados a {fecha}".
 - Si el escáner no encuentra ninguna señal clínica/de salud y el usuario no
@@ -66,17 +74,26 @@ python skills/analisis-regulatorio-samd/scripts/scan_repo.py <ruta> --json-out <
 ```
 (en Windows usa `python`; si no hay Python, haz grep dirigido con los patrones de
 `scripts/scan_repo.py` como guía). Lee el JSON: `signals`, `counts`,
-`hits_by_category`, `findings`, `manifests`, `model_files`.
+`hits_by_category`, `findings`, `manifests`, `model_files`, `supply_chain`.
+Señales relevantes para los pasos nuevos: `posible_transferencia_internacional`,
+`menciona_region_no_eu`, `menciona_proxy_o_cdn`, `tiene_sbom`,
+`tiene_gestion_dependencias`, `fija_versiones_dependencias`,
+`total_dependencias_directas_aprox`; y los grupos `infra_datos.*` y
+`supply_chain.*` en `findings` / `hits_by_category`.
 
 ### 3. ¿Es producto sanitario?
 Carga `references/calificacion-clasificacion.md`. Aplica el test MDCG 2019-11
 combinando la finalidad prevista (paso 1) con las señales del escáner.
 Resultado: **SÍ / NO / FRONTERA (borderline)** + justificación.
 
-- **NO** → evalúa solo normativa horizontal: RGPD/LOPDGDD (paso 6b), y si es
-  "health software" sin finalidad médica menciona ISO/IEC 82304-1 y las
-  directrices AEPD de apps de salud/bienestar. Salta al paso 8 (informe reducido,
-  pero mantén la tabla de cumplimiento RGPD y el contraste web de RGPD).
+- **NO** → evalúa solo normativa horizontal: RGPD/LOPDGDD (paso 6b) y los
+  entregables de datos y transferencias (paso 6d), y si es "health software" sin
+  finalidad médica menciona ISO/IEC 82304-1 y las directrices AEPD de apps de
+  salud/bienestar. **Deja constancia de que el "análisis de calificación" es un
+  entregable obligatorio aunque la conclusión sea NO** (es lo primero que exige
+  una inspección de AEMPS). Salta al paso 8 (informe reducido, pero mantén la
+  tabla de cumplimiento RGPD, el catálogo de entregables, las transferencias
+  internacionales y el contraste web de RGPD).
 - **SÍ / FRONTERA** → continúa.
 
 ### 4. Clasificar
@@ -95,7 +112,10 @@ Indica el nivel de confianza y qué datos faltan para cerrarlo.
    (siempre: EUDAMED, lista de normas armonizadas en el DOUE, RGPD/AEPD apps de
    salud; si IIa+: fees y procedimiento del organismo notificado, revisión MDR;
    si IA: calendario AI Act; si la organización es entidad de salud grande: NIS2
-   España). Para cada norma anota: **versión/edición vigente, fechas de
+   España; **si hay transferencias fuera del EEE: decisiones de adecuación
+   vigentes + estado del EU-US Data Privacy Framework**; **si es MDSW conectado o
+   hay componente no-PS: SBOM/MDCG 2019-16 + calendario del Cyber Resilience
+   Act**). Para cada norma anota: **versión/edición vigente, fechas de
    aplicación, guía MDCG más reciente, URL, fecha de consulta**.
 3. Corrige la tabla del paso 5.1 con lo verificado. Marca explícitamente lo que
    **no** has podido verificar.
@@ -126,6 +146,34 @@ Sub-pasos temáticos (usa las referencias específicas para el detalle):
   `references/ia-aiact.md`: ¿alto riesgo por art. 6.1?, obligaciones arts. 8-17
   con veredicto de cumplimiento, ¿el organismo notificado necesita designación
   AI Act?, fecha de exigibilidad **verificada por web** en el paso 5.
+- **6d. Entregables de datos y seguridad, transferencias internacionales y SBOM**
+  — carga `references/entregables-datos-y-seguridad.md`,
+  `references/transferencias-internacionales.md` y
+  `references/sbom-vulnerabilidades.md` (este último si hay `manifests` o el
+  producto es MDSW / trata datos). Produce **tres bloques**:
+  1. **Catálogo de entregables.** Para cada documento (análisis de calificación
+     —incl. "no es PS"—, análisis de riesgos del tratamiento, DPIA/EIPD, RAT,
+     DPA por proveedor, procedimiento de brechas, TIA, cláusulas informativas,
+     nota de transparencia de IA, designación de DPO): veredicto **obligatorio /
+     recomendado / no aplica** para este proyecto **con el criterio de decisión
+     explícito**, estado **presente / parcial / ausente** según el repo, y 1-2
+     frases de **qué es** y **cómo se genera / quién lo pide**. Rellena la tabla
+     resumen de esa referencia.
+  2. **Transferencias internacionales.** Con `infra_datos.*`, `third_party.*`,
+     `ai_ml.llm_apis` y 3-5 ficheros de configuración, construye la **tabla de
+     flujos de datos**: por flujo → proveedor, país/región, ¿sale del EEE?,
+     mecanismo del cap. V, ¿falta TIA?, estado. Señala explícitamente **proxies,
+     CDNs y endpoints fuera del EEE**. Marca como **brecha crítica** cualquier
+     flujo sin base legal del cap. V. Verifica por web (paso 5) la lista de
+     decisiones de adecuación y el estado del **EU-US Data Privacy Framework**.
+  3. **SBOM y vulnerabilidades.** Di si el **SBOM** y la **gestión de
+     vulnerabilidades** son obligatorios aquí y **por qué** (regla de
+     `sbom-vulnerabilidades.md` §2). Inventaria dependencias directas por
+     manifiesto (`supply_chain.dependency_counts`), ¿versiones fijadas?
+     (`lockfiles`), ¿SBOM ya presente? (`sbom_files`), ¿SCA en CI?
+     (`sca_config` / `supply_chain.sca_ci`), ¿CVD? (`cvd_policy`). Recomienda el
+     **comando de generación de SBOM** para el stack detectado y las herramientas
+     de cribado CVE. No ejecutes nada.
 
 ### 7. Ruta a la conformidad
 Con `references/normativa-y-organismos.md` (sección de organismos y costes) y
@@ -136,11 +184,15 @@ orientativa de coste/tiempo.
 ### 8. Redactar el informe
 Usa `assets/plantilla-informe.md`. Rellena todas las secciones, en especial la
 **tabla de cumplimiento norma por norma** (sección 5) con la columna "Cómo se
-gestiona" y la columna "Fuente verificada (URL + fecha)". Guarda como
-`informe-regulatorio-samd-AAAA-MM-DD.md` en la raíz del proyecto analizado y
-envíalo con SendUserFile. El informe debe responder explícitamente: en qué
-acierta el proyecto, en qué grupo/clase entra, a falta de qué está, y dónde
-están los riesgos.
+gestiona" y la columna "Fuente verificada (URL + fecha)", la **tabla de
+entregables de datos y seguridad** (sección 7.2: ¿obligatorio aquí?, por qué,
+estado, cómo se genera), la **tabla de flujos de datos / transferencias
+internacionales** (sección 7.5) y el bloque **SBOM y vulnerabilidades** (sección
+6.7). Guarda como `informe-regulatorio-samd-AAAA-MM-DD.md` en la raíz del
+proyecto analizado y envíalo con SendUserFile. El informe debe responder
+explícitamente: en qué acierta el proyecto, en qué grupo/clase entra, a falta de
+qué está, qué documentos debe generar y por qué, si los datos salen de Europa y
+con qué cobertura, y dónde están los riesgos.
 
 ## Aviso obligatorio en el informe
 Incluir siempre: *documento orientativo de planificación, no sustituye asesoría

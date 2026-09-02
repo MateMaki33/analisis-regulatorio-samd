@@ -4,6 +4,15 @@ Objetivo del paso: (a) mapear las obligaciones de protección de datos que aplic
 al proyecto y (b) producir una **lista de vulnerabilidades concretas** con
 `fichero:línea` a partir del JSON del escáner.
 
+> **Entregables y transferencias.** Para decidir *qué documentos debe generar el
+> proyecto y si son obligatorios* (análisis de calificación, análisis de riesgos
+> del tratamiento, DPIA, RAT, DPA/art. 28, procedimiento de brechas, TIA, nota de
+> transparencia de IA, DPO), usa `references/entregables-datos-y-seguridad.md`.
+> Para el análisis del **capítulo V** (datos fuera del EEE: regiones cloud,
+> proxies, CDNs, APIs de IA) usa `references/transferencias-internacionales.md`.
+> Para **SBOM y gestión de vulnerabilidades de dependencias** usa
+> `references/sbom-vulnerabilidades.md`.
+
 ---
 
 ## A. ¿Qué régimen aplica?
@@ -26,10 +35,11 @@ al proyecto y (b) producir una **lista de vulnerabilidades concretas** con
 | Obligación | Qué implica | Artículo |
 |---|---|---|
 | **Base jurídica doble** | Base del art. 6 (normalmente 6.1.a consentimiento, 6.1.b contrato, 6.1.e misión de interés público en sanidad pública) **+** excepción del art. 9.2: típicamente **9.2.a** (consentimiento explícito) o **9.2.h** (asistencia sanitaria por profesional sujeto a secreto, con contrato/norma de por medio) | 6, 9 |
-| **EIPD / DPIA** | Evaluación de impacto **previa**. Obligatoria en tratamiento a gran escala de categorías especiales, observación sistemática, o uso de tecnologías innovadoras (IA). En apps de salud con pacientes: casi siempre exigible. Si el riesgo residual es alto → **consulta previa a la AEPD** (art. 36) | 35, 36 |
+| **Análisis de riesgos del tratamiento** | Valoración del riesgo para los derechos y libertades — el análisis "de partida" que **siempre** hay que hacer y que decide si además hace falta DPIA. No confundir con ISO 14971 (riesgo del producto) ni con IEC 81001-5-1 (riesgo de ciberseguridad) | 24, 32 |
+| **EIPD / DPIA** | Evaluación de impacto **previa**. Obligatoria en tratamiento a gran escala de categorías especiales, observación sistemática, o uso de tecnologías innovadoras (IA); ver lista AEPD. En apps de salud con pacientes: casi siempre exigible. Si el riesgo residual es alto → **consulta previa a la AEPD** (art. 36) | 35, 36 |
 | **RAT** | Registro de Actividades de Tratamiento documentado | 30 |
 | **Encargados del tratamiento** | Contrato del art. 28 con todo proveedor que trate datos por cuenta del responsable (hosting, analítica, IA como servicio, soporte). `findings.third_party` y `findings.security.nube_datos` marcan candidatos | 28 |
-| **Transferencias internacionales** | Si hay proveedores fuera del EEE (nube US, APIs de IA): mecanismo del cap. V (decisión de adecuación, CCT + *Transfer Impact Assessment*, BCR) | 44-49 |
+| **Transferencias internacionales** | Si algún dato sale del EEE —proveedor fuera del EEE, **región cloud no europea, proxy/CDN/WAF fuera del EEE, API de IA, acceso remoto desde tercer país**— aplica el cap. V: decisión de adecuación (art. 45; EE. UU. solo vía EU-US Data Privacy Framework), garantías adecuadas (art. 46: CCT/BCR **+ TIA obligatorio**), o excepciones del art. 49. Detalle y detección en `transferencias-internacionales.md` | 44-49 |
 | **Privacidad desde el diseño y por defecto** | Minimización, seudonimización temprana, cifrado, control de acceso por rol, retención limitada y borrado, no recoger campos no necesarios | 25 |
 | **Seguridad del tratamiento** | Medidas técnicas y organizativas apropiadas: cifrado en tránsito y reposo, control de acceso, registro de accesos, copias, pruebas periódicas | 32 |
 | **Notificación de brechas** | A la AEPD en 72 h; a los interesados si alto riesgo | 33, 34 |
@@ -73,11 +83,15 @@ Recorre el JSON del escáner y clasifica cada hallazgo. Para cada uno reporta:
 | Ausencia de `security.cifrado_reposo` con datos de salud persistidos | Sin cifrado en reposo | RGPD 32; MDCG 2019-16 |
 
 ### C.3 Terceros y transferencias
+Detalle completo y tabla de flujos de datos en `transferencias-internacionales.md`.
+
 | Señal escáner | Vulnerabilidad | Norma |
 |---|---|---|
 | `third_party.analitica`, `third_party.crash_repo`, `third_party.publicidad` | SDKs que exfiltran datos de uso/dispositivo; en apps de salud el `analitica`+`publicidad` suele ser incompatible con art. 9 | RGPD 6, 9, 28, 44; Directrices AEPD apps de salud |
 | `third_party.nube_datos` / endpoints fuera del EEE | Encargado sin contrato art. 28 / transferencia internacional sin garantías | RGPD 28, 44-49 |
-| `ai_ml.llm_apis` (OpenAI/Anthropic/etc.) tratando datos de paciente | Comunicación de datos de salud a un tercero, posible transferencia internacional y uso para entrenamiento | RGPD 9, 28, 44; AI Act |
+| `infra_datos.region_no_eu` (regiones cloud `us-*`, `ap-*`, `eastus`…) | Datos almacenados/procesados fuera del EEE sin mecanismo del cap. V | RGPD 44-49 |
+| `infra_datos.proxy_cdn` (proxy inverso, CDN, WAF, API gateway fuera del EEE) | Tránsito y acceso a datos personales (IP del paciente, cabeceras, contenido) por un tercer país | RGPD 44-49; EDPB Recomendaciones 01/2020 |
+| `ai_ml.llm_apis` (OpenAI/Anthropic/etc.) tratando datos de paciente | Comunicación de datos de salud a un tercero, transferencia internacional (asumir EE. UU. salvo endpoint/región europea + addendum) y posible uso para entrenamiento | RGPD 9, 28, 44; AI Act |
 
 ### C.4 IA y datos
 - `ai_ml.entrenamiento` + `special_category.*` → gobernanza de datos de
@@ -93,7 +107,17 @@ Recorre el JSON del escáner y clasifica cada hallazgo. Para cada uno reporta:
 
 1. **Tabla de bases jurídicas** propuestas (art. 6 + art. 9) para cada finalidad.
 2. **Checklist de obligaciones** con estado: cubierto / parcial / ausente / no sé.
-3. **Lista priorizada de vulnerabilidades** (crítica / alta / media) con
-   `fichero:línea` y remediación concreta.
-4. **DPIA: ¿exigible?** (sí/no + por qué) y si procede consulta previa a la AEPD.
-5. Nota sobre **DPO** (¿obligatorio?) y sobre **transferencias internacionales**.
+3. **Tabla de entregables de datos y seguridad** (de
+   `entregables-datos-y-seguridad.md`): por documento, ¿obligatorio aquí? + por
+   qué + estado + cómo se genera.
+4. **Lista priorizada de vulnerabilidades** (crítica / alta / media) con
+   `fichero:línea` y remediación concreta, incluyendo dependencias con CVE si el
+   escáner o el usuario aportan datos.
+5. **DPIA: ¿exigible?** (sí/no + por qué) y si procede consulta previa a la AEPD;
+   antes, **análisis de riesgos del tratamiento** (siempre).
+6. **Tabla de flujos de datos / transferencias internacionales** (de
+   `transferencias-internacionales.md`): ¿sale del EEE?, mecanismo cap. V, ¿TIA?,
+   flujos sin cobertura.
+7. **SBOM y gestión de vulnerabilidades** (de `sbom-vulnerabilidades.md`):
+   ¿obligatorios aquí? + estado + recomendación de generación.
+8. Nota sobre **DPO** (¿obligatorio?).

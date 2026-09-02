@@ -29,6 +29,26 @@ SKIP_DIRS = {
     "vendor", "Pods", ".terraform", "coverage", ".mypy_cache", ".pytest_cache",
     "site-packages", ".tox", ".cache", "bower_components", ".dart_tool",
 }
+# Directorios que empiezan por "." pero SÍ interesa recorrer (CI, config de
+# gestión de dependencias, plantillas de seguridad).
+KEEP_DOT_DIRS = {".github", ".gitlab", ".circleci", ".azuredevops", ".ci"}
+
+# Ficheros detectados por NOMBRE (no por contenido): fijación de versiones,
+# SBOM ya generado, configuración de análisis de composición / CVE.
+LOCKFILES = {
+    "package-lock.json", "yarn.lock", "pnpm-lock.yaml", "poetry.lock", "pipfile.lock",
+    "cargo.lock", "composer.lock", "go.sum", "gemfile.lock", "packages.lock.json",
+}
+SCA_CONFIG_NAMES = {
+    "dependabot.yml", "dependabot.yaml", "renovate.json", ".renovaterc",
+    ".renovaterc.json", "renovate.json5", "trivy.yaml", ".trivyignore",
+    ".snyk", "osv-scanner.toml", "dependency-check.properties",
+}
+CVD_NAMES = {"security.md", "security.txt"}
+SBOM_NAME_RX = re.compile(
+    r"(\.cdx\.json$|\.spdx(\.json)?$|^sbom\.json$|^bom\.json$|^bom\.xml$|cyclonedx)",
+    re.IGNORECASE,
+)
 # Ficheros que sí interesa inspeccionar aunque sean grandes.
 MANIFESTS = {
     "package.json", "requirements.txt", "pyproject.toml", "pipfile", "poetry.lock",
@@ -36,11 +56,18 @@ MANIFESTS = {
     "pubspec.yaml", "cargo.toml", "environment.yml", "setup.py", "setup.cfg",
 }
 DOC_NAMES = {"readme", "readme.md", "readme.rst", "readme.txt", "intended_use", "claims"}
+# Ficheros de configuración/infra que interesa escanear aunque su extensión no
+# esté en CODE_EXT (variables de entorno, compose, IaC, helm...).
+CONFIG_NAME_PREFIXES = (".env", "docker-compose", "compose.", "serverless")
+CONFIG_NAMES = {
+    "dockerfile", "makefile", "procfile", "app.yaml", "app.yml", "vercel.json",
+    "netlify.toml", "fly.toml", "render.yaml", "railway.json", "wrangler.toml",
+}
 CODE_EXT = {
     ".py", ".js", ".jsx", ".ts", ".tsx", ".java", ".kt", ".go", ".rb", ".php", ".cs",
     ".swift", ".m", ".mm", ".dart", ".c", ".cpp", ".cc", ".h", ".hpp", ".rs", ".scala",
     ".sql", ".sh", ".yaml", ".yml", ".json", ".xml", ".md", ".txt", ".env", ".ini",
-    ".toml", ".cfg", ".properties", ".gradle", ".tf",
+    ".toml", ".cfg", ".properties", ".gradle", ".tf", ".conf", ".hcl", ".tfvars",
 }
 MODEL_EXT = {".pt", ".pth", ".onnx", ".h5", ".hdf5", ".pb", ".tflite", ".pkl", ".joblib",
              ".safetensors", ".ckpt", ".mlmodel", ".caffemodel"}
@@ -119,6 +146,51 @@ CONSENT_PATTERNS = {
     "consentimiento": _rx(r"\b(consentimiento\s+(informado|expl[ií]cito)|informed\s+consent|opt-?in|acepta[r]?\s+t[eé]rminos|privacy\s+policy|pol[ií]tica\s+de\s+privacidad|GDPR|RGPD|data\s+protection|DPIA|EIPD|derecho\s+de\s+supresi|right\s+to\s+erasure|anonimizaci|seud[oó]nim|pseudonym)\b"),
 }
 
+# Infraestructura y salida de datos del EEE (transferencias internacionales).
+INFRA_DATOS_PATTERNS = {
+    "region_no_eu": _rx(
+        r"\b(us-(east|west|gov)-\d|us-central\d|ap-(south|southeast|northeast|east)-\d|"
+        r"sa-east-\d|ca-central-\d|af-south-\d|me-(south|central)-\d|"
+        r"us-central1|us-east[145]|us-west[1-4]|northamerica-northeast\d|southamerica-east\d|"
+        r"asia-(east|south|southeast|northeast)\d|australia-southeast\d|"
+        r"eastus\d?|westus\d?|centralus|southcentralus|northcentralus|"
+        r"australiaeast|australiasoutheast|brazilsouth|southeastasia|eastasia|"
+        r"japaneast|japanwest|koreacentral|koreasouth|centralindia|southindia|westindia|"
+        r"uaenorth|canadacentral|canadaeast|southafricanorth)\b"
+    ),
+    "proxy_cdn": _rx(
+        r"\b(HTTPS?_PROXY|NO_PROXY|proxy_pass|upstream\s+[\w.-]+\s*\{|X-Forwarded-For|"
+        r"cloudfront\.net|fastly\.net|akamai(hd|edge)?\.net|[\w.-]*\.cloudflare\.com|"
+        r"fastly\.com|akamai\.com|edgekey\.net|b-cdn\.net)\b|\.pac\b"
+    ),
+    "data_residency": _rx(
+        r"\b(data[_-]?residency|AWS_REGION|AWS_DEFAULT_REGION|GOOGLE_CLOUD_REGION|"
+        r"GCP_REGION|AZURE_REGION|CLOUDSDK_COMPUTE_REGION|DEFAULT_REGION)\b|"
+        r"\bregion\s*[:=]\s*[\"']?(us|ap|sa|ca|af|me|eastus|westus|australia|japan|korea|india|uae|brazil|canada)"
+    ),
+    "region_eu": _rx(
+        r"\b(eu-(west|central|south|north)-\d|europe-(west|north|central|southwest)\d|"
+        r"westeurope|northeurope|francecentral|germanywestcentral|spaincentral|"
+        r"swedencentral|switzerlandnorth|norwayeast|polandcentral|italynorth|uksouth|ukwest)\b"
+    ),
+}
+
+# Cadena de suministro de software: fijación de versiones, SBOM, SCA, CVD.
+SUPPLY_CHAIN_PATTERNS = {
+    "sca_ci": _rx(
+        r"\b(dependabot|renovate(bot)?|snyk|trivy|grype|osv-scanner|"
+        r"dependency-check|dependency-track|govulncheck|cargo\s+audit|"
+        r"bundler-audit|pip-audit|npm\s+audit|composer\s+audit)\b"
+    ),
+    "sbom_ref": _rx(r"\b(cyclonedx|spdx|\bsbom\b|software\s+bill\s+of\s+materials|bill\s+of\s+materials)\b"),
+    "vex_ref": _rx(r"\b(VEX|vulnerability[- ]exploitability|openvex|csaf)\b"),
+    "cvd_ref": _rx(
+        r"\b(coordinated\s+(vulnerability\s+)?disclosure|responsible\s+disclosure|"
+        r"vulnerability\s+disclosure\s+policy|security\.txt|report\s+a\s+vulnerability)\b"
+    ),
+    "soup": _rx(r"\b(SOUP|software\s+of\s+unknown\s+provenance)\b"),
+}
+
 ALL_GROUPS = {
     "clinical": CLINICAL_PATTERNS,
     "special_category": SPECIAL_CATEGORY_PATTERNS,
@@ -128,14 +200,58 @@ ALL_GROUPS = {
     "ai_ml": AI_PATTERNS,
     "third_party": THIRD_PARTY_PATTERNS,
     "privacy_controls": CONSENT_PATTERNS,
+    "infra_datos": INFRA_DATOS_PATTERNS,
+    "supply_chain": SUPPLY_CHAIN_PATTERNS,
 }
 
 
 def iter_files(root: Path):
     for dirpath, dirnames, filenames in os.walk(root):
-        dirnames[:] = [d for d in dirnames if d.lower() not in SKIP_DIRS and not d.startswith(".")]
+        dirnames[:] = [
+            d for d in dirnames
+            if d.lower() not in SKIP_DIRS
+            and (not d.startswith(".") or d.lower() in KEEP_DOT_DIRS)
+        ]
         for fn in filenames:
             yield Path(dirpath) / fn
+
+
+def count_deps(name: str, text: str) -> "int | None":
+    """Cuenta aproximada de dependencias DIRECTAS declaradas en un manifiesto.
+
+    Best-effort y tolerante a errores: devuelve None si no sabe interpretarlo.
+    """
+    n = name.lower()
+    try:
+        if n == "package.json":
+            data = json.loads(text)
+            return len(data.get("dependencies", {}) or {}) + len(data.get("devDependencies", {}) or {})
+        if n == "composer.json":
+            data = json.loads(text)
+            return len(data.get("require", {}) or {}) + len(data.get("require-dev", {}) or {})
+        if n in ("requirements.txt", "constraints.txt"):
+            return sum(
+                1 for ln in text.splitlines()
+                if ln.strip() and not ln.strip().startswith(("#", "-r", "--"))
+            )
+        if n == "pyproject.toml":
+            # cuenta líneas dentro de [tool.poetry.dependencies] / [project].dependencies
+            return len(re.findall(r"^\s*[A-Za-z0-9_.\-]+\s*=\s*[\"'{]", text, re.MULTILINE)) or None
+        if n in ("go.mod",):
+            return len(re.findall(r"^\s+[\w.\-/]+\s+v\d", text, re.MULTILINE)) or None
+        if n in ("cargo.toml", "pipfile"):
+            return len(re.findall(r"^\s*[A-Za-z0-9_.\-]+\s*=", text, re.MULTILINE)) or None
+        if n in ("build.gradle", "build.gradle.kts"):
+            return len(re.findall(r"\b(implementation|api|compile|testImplementation|runtimeOnly)\b[\s(]", text)) or None
+        if n == "pom.xml":
+            return text.count("<dependency>") or None
+        if n == "gemfile":
+            return len(re.findall(r"^\s*gem\s+[\"']", text, re.MULTILINE)) or None
+        if n in ("pubspec.yaml", "environment.yml"):
+            return None
+    except Exception:
+        return None
+    return None
 
 
 def rel(root: Path, p: Path) -> str:
@@ -179,6 +295,13 @@ def main():
         "findings": {g: [] for g in ALL_GROUPS},
         "counts": {g: 0 for g in ALL_GROUPS},
         "hits_by_category": {},   # categoria -> nº de coincidencias
+        "supply_chain": {         # detectado por NOMBRE de fichero
+            "lockfiles": [],
+            "sca_config": [],     # dependabot / renovate / trivy / snyk...
+            "sbom_files": [],
+            "cvd_policy": [],     # SECURITY.md / security.txt
+            "dependency_counts": {},  # ruta de manifiesto -> nº aprox. de deps directas
+        },
     }
 
     per_cat_seen = {}
@@ -191,13 +314,27 @@ def main():
             result["model_files"].append(rel(root, p))
             continue
 
+        # Detección por NOMBRE (no se escanea el contenido de estos ficheros).
+        if name in LOCKFILES:
+            result["supply_chain"]["lockfiles"].append(rel(root, p))
+        if name in SCA_CONFIG_NAMES:
+            result["supply_chain"]["sca_config"].append(rel(root, p))
+        if name in CVD_NAMES:
+            result["supply_chain"]["cvd_policy"].append(rel(root, p))
+        if SBOM_NAME_RX.search(name):
+            result["supply_chain"]["sbom_files"].append(rel(root, p))
+
         is_manifest = name in MANIFESTS
         is_doc = name in DOC_NAMES or (ext == ".md" and "readme" in name)
+        is_config = (
+            name in CONFIG_NAMES
+            or name.startswith(CONFIG_NAME_PREFIXES)
+        )
 
         if ext in CODE_EXT:
             result["languages"][ext] = result["languages"].get(ext, 0) + 1
 
-        if not (is_manifest or is_doc or ext in CODE_EXT):
+        if not (is_manifest or is_doc or is_config or ext in CODE_EXT):
             continue
 
         try:
@@ -218,6 +355,9 @@ def main():
 
         if is_manifest:
             result["manifests"][rp] = text[:6000]
+            dc = count_deps(p.name, text)
+            if dc is not None:
+                result["supply_chain"]["dependency_counts"][rp] = dc
         if is_doc:
             result["doc_files"].append(rp)
 
@@ -263,6 +403,27 @@ def main():
         "terceros_receptores_datos": any_hit("third_party."),
         "menciona_controles_privacidad": any_hit("privacy_controls."),
         "hay_modelos_entrenados_en_repo": len(result["model_files"]) > 0,
+        # --- Transferencias internacionales (Cap. V RGPD) ---
+        "posible_transferencia_internacional": (
+            hbc.get("infra_datos.region_no_eu", 0) > 0
+            or hbc.get("infra_datos.proxy_cdn", 0) > 0
+            or hbc.get("ai_ml.llm_apis", 0) > 0
+            or any_hit("third_party.")
+        ),
+        "menciona_region_no_eu": hbc.get("infra_datos.region_no_eu", 0) > 0,
+        "menciona_region_eu": hbc.get("infra_datos.region_eu", 0) > 0,
+        "menciona_proxy_o_cdn": hbc.get("infra_datos.proxy_cdn", 0) > 0,
+        # --- Cadena de suministro / SBOM ---
+        "fija_versiones_dependencias": len(result["supply_chain"]["lockfiles"]) > 0,
+        "tiene_sbom": len(result["supply_chain"]["sbom_files"]) > 0
+            or hbc.get("supply_chain.sbom_ref", 0) > 0,
+        "tiene_gestion_dependencias": len(result["supply_chain"]["sca_config"]) > 0
+            or hbc.get("supply_chain.sca_ci", 0) > 0,
+        "tiene_politica_divulgacion": len(result["supply_chain"]["cvd_policy"]) > 0
+            or hbc.get("supply_chain.cvd_ref", 0) > 0,
+        "total_dependencias_directas_aprox": sum(
+            result["supply_chain"]["dependency_counts"].values()
+        ) or None,
     }
 
     out = json.dumps(result, ensure_ascii=False, indent=2)

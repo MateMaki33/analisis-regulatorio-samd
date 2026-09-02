@@ -79,7 +79,9 @@ organismo**, y **señales del escáner** que permiten presumir cumplimiento parc
 - **SOUP (Software of Unknown Provenance):** inventariar toda dependencia de
   terceros (nombre, versión, propósito), definir requisitos funcionales y de
   rendimiento que se le exigen, y analizar sus anomalías conocidas
-  (CVE/bug trackers) frente a la seguridad del paciente. → **SBOM**.
+  (CVE/bug trackers) frente a la seguridad del paciente. → **SBOM**. Formatos
+  (CycloneDX / SPDX), herramientas de generación y de cribado, VEX y CVD en
+  `references/sbom-vulnerabilidades.md`.
 - **Entregables:** Plan de desarrollo; especificación de requisitos de software
   (SRS) con trazabilidad a requisitos de sistema y a riesgos; descripción de
   arquitectura (B/C); descripción de diseño detallado (C); registros de revisión
@@ -131,8 +133,10 @@ organismo**, y **señales del escáner** que permiten presumir cumplimiento parc
     STRIDE), superficie de ataque mínima, autenticación/autorización, cifrado en
     tránsito y en reposo, gestión de secretos, registro de auditoría, actualización
     segura (firma de artefactos).
-  - **Gestión de la cadena de suministro:** SBOM, evaluación de componentes de
-    terceros, verificación de integridad.
+  - **Gestión de la cadena de suministro:** SBOM (CycloneDX/SPDX), evaluación de
+    componentes de terceros, verificación de integridad, VEX. Detalle,
+    herramientas y criterio de obligatoriedad en
+    `references/sbom-vulnerabilidades.md`.
   - **Verificación de seguridad:** pruebas estáticas (SAST), análisis de
     composición (SCA), pruebas dinámicas / pentest, gestión de configuración
     endurecida.

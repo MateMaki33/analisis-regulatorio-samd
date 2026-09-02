@@ -5,7 +5,14 @@ software y lo sitúa frente a la normativa de **producto sanitario** (SaMD / MDS
 en España y la UE: calificación (MDCG 2019-11), clasificación de riesgo
 (Regla 11 MDR), clase IEC 62304, mapa normativo con contraste en fuentes
 oficiales, veredicto de cumplimiento norma por norma, vulnerabilidades RGPD y
-ruta a marcado CE. Produce un informe de situación en Markdown.
+ruta a marcado CE. Dice además **qué entregables de datos y seguridad debe
+generar el proyecto y qué es cada uno** (análisis de calificación como "no
+producto sanitario", análisis de riesgos del tratamiento, DPIA/EIPD, RAT,
+DPA/contratos de encargado, procedimiento de brechas, TIA, nota de transparencia
+sobre uso de IA, SBOM y gestión de vulnerabilidades), analiza las **dependencias**
+y detecta si los **datos salen del EEE** (regiones cloud no europeas, proxies,
+CDNs, APIs de IA) y con qué cobertura del capítulo V del RGPD. Produce un informe
+de situación en Markdown.
 
 > Documento orientativo de planificación. No sustituye asesoría legal o
 > regulatoria. Contenido normativo a fecha **septiembre 2026**.
@@ -60,6 +67,9 @@ skills/analisis-regulatorio-samd/
     requisitos-tecnicos.md         Qué exige cada norma y cómo se acredita
     evaluacion-cumplimiento.md     Rúbrica: veredicto por norma + cómo se gestiona
     rgpd-datos.md                  Obligaciones RGPD + catálogo de vulnerabilidades
+    entregables-datos-y-seguridad.md  Qué documento generar y si es obligatorio
+    transferencias-internacionales.md Datos fuera del EEE (Cap. V) + proxies/CDN
+    sbom-vulnerabilidades.md       Qué es el SBOM, cuándo obliga, cómo generarlo
     ia-aiact.md                    Reglamento (UE) 2024/1689 para SaMD con IA
     checkpoints-volatiles.md       Lista de contraste web (qué verificar y dónde)
   assets/plantilla-informe.md      Plantilla del informe de situación
