@@ -24,65 +24,12 @@ ruta a marcado CE. Produce un informe de situación en Markdown.
 
 ## Instalación
 
-Una skill de Claude Code es **una carpeta con un `SKILL.md` dentro**. La forma
-recomendada de instalarla es el CLI `skills` (`npx skills`), que descarga la
-skill del repo y la enlaza en el directorio de skills del agente. No hay build
-ni `npm install`.
-
-### Opción 1 — Skill personal, disponible en todos tus proyectos (recomendada)
-
 ```bash
-npx skills add MateMaki33/analisis-regulatorio-samd \
-  --skill analisis-regulatorio-samd --agent claude-code --global
+npx skills add MateMaki33/analisis-regulatorio-samd
 ```
 
-Con `--global` la skill queda enlazada en `~/.claude/skills/` y está disponible
-en todos tus proyectos. Añade `--yes` para saltarte las confirmaciones.
-
-> `npx skills` acepta el atajo `usuario/repo`, la URL completa de GitHub
-> (`https://github.com/MateMaki33/analisis-regulatorio-samd`) o cualquier URL
-> git. Por defecto crea un symlink a una copia cacheada (fuente única, fácil de
-> actualizar); usa `--copy` si prefieres una copia independiente.
-
-### Opción 2 — Skill de un solo proyecto (se versiona con el repo)
-
-Lo mismo sin `--global`: se instala en `.claude/skills/` del proyecto actual.
-
-```bash
-npx skills add MateMaki33/analisis-regulatorio-samd \
-  --skill analisis-regulatorio-samd --agent claude-code
-```
-
-Queda disponible solo cuando abres Claude Code en ese proyecto. Si usas `--copy`
-puedes commitear la carpeta para el equipo.
-
-### Opción 3 — Copia manual (repo privado, sin red, u offline)
-
-```bash
-git clone https://github.com/MateMaki33/analisis-regulatorio-samd.git
-cp -r analisis-regulatorio-samd/skills/analisis-regulatorio-samd \
-  ~/.claude/skills/
-```
-
-O descarga el ZIP y copia la carpeta `skills/analisis-regulatorio-samd` dentro
-de `~/.claude/skills/`. En Windows (PowerShell):
-
-```powershell
-Copy-Item -Recurse .\skills\analisis-regulatorio-samd "$HOME\.claude\skills\"
-```
-
-### Comprobar la instalación
-
-La ruta final debe ser:
-
-```
-~/.claude/skills/analisis-regulatorio-samd/SKILL.md      (personal)
-.claude/skills/analisis-regulatorio-samd/SKILL.md        (proyecto)
-```
-
-Comprueba lo instalado con `npx skills list`. Luego abre una sesión nueva de
-Claude Code y pídele: *"¿tienes disponible la skill analisis-regulatorio-samd?"*
-— debería listarla.
+El CLI `skills` te pregunta por la terminal qué skill instalar, para qué agente
+y si global o en el proyecto. No hay build ni `npm install`.
 
 ---
 
@@ -123,22 +70,12 @@ paso.
 
 ---
 
-## Actualizar
+## Actualizar y desinstalar
 
 ```bash
 npx skills update analisis-regulatorio-samd
+npx skills remove analisis-regulatorio-samd
 ```
-
-(o `npx skills update -y` para todo). Si instalaste por copia manual, repite la
-copia sobre la carpeta existente.
-
-## Desinstalar
-
-```bash
-npx skills remove analisis-regulatorio-samd --agent claude-code --global
-```
-
-Instalación manual: `rm -rf ~/.claude/skills/analisis-regulatorio-samd`.
 
 ---
 
