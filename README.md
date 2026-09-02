@@ -32,7 +32,7 @@ ni `npm install`.
 ### Opción 1 — Skill personal, disponible en todos tus proyectos (recomendada)
 
 ```bash
-npx skills add matemaki33/analisis-regulatorio-samd \
+npx skills add MateMaki33/analisis-regulatorio-samd \
   --skill analisis-regulatorio-samd --agent claude-code --global
 ```
 
@@ -40,7 +40,7 @@ Con `--global` la skill queda enlazada en `~/.claude/skills/` y está disponible
 en todos tus proyectos. Añade `--yes` para saltarte las confirmaciones.
 
 > `npx skills` acepta el atajo `usuario/repo`, la URL completa de GitHub
-> (`https://github.com/matemaki33/analisis-regulatorio-samd`) o cualquier URL
+> (`https://github.com/MateMaki33/analisis-regulatorio-samd`) o cualquier URL
 > git. Por defecto crea un symlink a una copia cacheada (fuente única, fácil de
 > actualizar); usa `--copy` si prefieres una copia independiente.
 
@@ -49,7 +49,7 @@ en todos tus proyectos. Añade `--yes` para saltarte las confirmaciones.
 Lo mismo sin `--global`: se instala en `.claude/skills/` del proyecto actual.
 
 ```bash
-npx skills add matemaki33/analisis-regulatorio-samd \
+npx skills add MateMaki33/analisis-regulatorio-samd \
   --skill analisis-regulatorio-samd --agent claude-code
 ```
 
@@ -59,7 +59,7 @@ puedes commitear la carpeta para el equipo.
 ### Opción 3 — Copia manual (repo privado, sin red, u offline)
 
 ```bash
-git clone https://github.com/matemaki33/analisis-regulatorio-samd.git
+git clone https://github.com/MateMaki33/analisis-regulatorio-samd.git
 cp -r analisis-regulatorio-samd/skills/analisis-regulatorio-samd \
   ~/.claude/skills/
 ```
