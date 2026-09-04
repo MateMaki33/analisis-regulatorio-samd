@@ -299,6 +299,16 @@ consultora): {clase I → interno; IIa-III → tasas CNCps ~22-27 k€, proyecto
 
 ---
 
+## Anexo A. Índice de siglas
+
+Todas las siglas y acrónimos usados en este informe, en orden alfabético.
+
+| Sigla | Significado |
+|---|---|
+| {…} | {…} |
+
+---
+
 *Generado con la skill `analisis-regulatorio-samd`. Contenido normativo a fecha
 {AAAA-MM-DD}; verificar cambios en EUR-Lex / BOE / AEMPS antes de decisiones
 vinculantes.*

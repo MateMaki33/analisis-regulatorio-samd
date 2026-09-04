@@ -227,6 +227,15 @@ está, qué documentos debe generar y por qué, si los datos salen de Europa y c
 qué cobertura, si es también sistema EHR bajo el EHDS, y dónde están los
 riesgos.
 
+**Índice de siglas (obligatorio, última sección del informe).** Carga
+`references/glosario-siglas.md`. Repasa el informe ya redactado y anota cada
+sigla/acrónimo que aparece en el texto (MDR, IVDR, RGPD, DPIA, SBOM, EHDS...).
+Genera la tabla del **Anexo A** de la plantilla con esas siglas **en orden
+alfabético**, copiando el significado del glosario. Si el informe usa una
+sigla que no está en el glosario (propia del repo/dominio analizado), añádela
+igualmente con el significado que se deduzca del contexto — el índice debe
+cubrir el 100% de las siglas del informe, no solo las del glosario.
+
 ## Aviso obligatorio en el informe
 Incluir siempre: *documento orientativo de planificación, no sustituye asesoría
 legal/regulatoria; la clasificación vinculante la confirma un organismo

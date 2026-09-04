@@ -1,8 +1,11 @@
 # analisis-regulatorio-samd
 
-Skill de Claude Code para analizar un proyecto de software y situarlo frente a la
-normativa de **producto sanitario** (SaMD / MDSW, incluido diagnóstico in vitro)
-y de **historia clínica electrónica** (EHDS) en España y la UE.
+Skill (Agent Skill) para analizar un proyecto de software y situarlo frente a
+la normativa de **producto sanitario** (SaMD / MDSW, incluido diagnóstico in
+vitro) y de **historia clínica electrónica** (EHDS) en España y la UE. No está
+ligada a un agente concreto: sigue el formato estándar de Agent Skills
+(`SKILL.md` + `references/` + `scripts/` + `assets/`) y funciona con cualquier
+agente de código compatible con ese formato.
 
 ## Qué hace
 
@@ -43,8 +46,9 @@ y de **historia clínica electrónica** (EHDS) en España y la UE.
    decide si el **SBOM** y la **gestión de vulnerabilidades** son obligatorios,
    con inventario de dependencias y comando de generación.
 7. Ordena las brechas en una **ruta a la conformidad** por fases.
-8. Redacta un **informe de situación** en Markdown (`assets/plantilla-informe.md`)
-   y lo entrega al usuario.
+8. Redacta un **informe de situación** en Markdown (`assets/plantilla-informe.md`),
+   con un **índice de siglas** final (`references/glosario-siglas.md`) que
+   explica cada acrónimo usado en el informe, y lo entrega al usuario.
 
 ## Estructura
 
@@ -64,6 +68,7 @@ references/
   sbom-vulnerabilidades.md       Qué es el SBOM, cuándo obliga, cómo generarlo
   ia-aiact.md                    Reglamento (UE) 2024/1689 para SaMD con IA
   checkpoints-volatiles.md       Lista de contraste web (qué verificar y dónde)
+  glosario-siglas.md             Significado de cada sigla/acrónimo usado en el informe
 assets/plantilla-informe.md      Plantilla del informe de situación
 ```
 

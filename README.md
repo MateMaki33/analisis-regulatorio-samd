@@ -1,20 +1,27 @@
 # analisis-regulatorio-samd
 
-Skill de [Claude Code](https://claude.com/claude-code) que analiza un proyecto de
-software y lo sitúa frente a la normativa de **producto sanitario** (SaMD / MDSW,
-incluido diagnóstico in vitro) y de **historia clínica electrónica** en España y
-la UE: calificación (MDCG 2019-11) con enrutado **MDR vs. IVDR**, clasificación
-de riesgo (Regla 11 MDR o Reglas 1-7 IVDR), clase IEC 62304, mapa normativo con
-contraste en fuentes oficiales, veredicto de cumplimiento norma por norma,
-vulnerabilidades RGPD y ruta a marcado CE. Dice además **qué entregables de
-datos y seguridad debe generar el proyecto y qué es cada uno** (análisis de
-calificación como "no producto sanitario", análisis de riesgos del tratamiento,
-DPIA/EIPD, RAT, DPA/contratos de encargado, procedimiento de brechas, TIA, nota
-de transparencia sobre uso de IA, calificación/marcado CE como sistema EHR bajo
-el **Espacio Europeo de Datos Sanitarios (EHDS)**, SBOM y gestión de
+Skill (Agent Skill) que analiza un proyecto de software y lo sitúa frente a la
+normativa de **producto sanitario** (SaMD / MDSW, incluido diagnóstico in
+vitro) y de **historia clínica electrónica** en España y la UE: calificación
+(MDCG 2019-11) con enrutado **MDR vs. IVDR**, clasificación de riesgo (Regla 11
+MDR o Reglas 1-7 IVDR), clase IEC 62304, mapa normativo con contraste en
+fuentes oficiales, veredicto de cumplimiento norma por norma, vulnerabilidades
+RGPD y ruta a marcado CE. Dice además **qué entregables de datos y seguridad
+debe generar el proyecto y qué es cada uno** (análisis de calificación como "no
+producto sanitario", análisis de riesgos del tratamiento, DPIA/EIPD, RAT,
+DPA/contratos de encargado, procedimiento de brechas, TIA, nota de
+transparencia sobre uso de IA, calificación/marcado CE como sistema EHR bajo el
+**Espacio Europeo de Datos Sanitarios (EHDS)**, SBOM y gestión de
 vulnerabilidades), analiza las **dependencias** y detecta si los **datos salen
 del EEE** (regiones cloud no europeas, proxies, CDNs, APIs de IA) y con qué
-cobertura del capítulo V del RGPD. Produce un informe de situación en Markdown.
+cobertura del capítulo V del RGPD. Produce un informe de situación en Markdown,
+con un **índice de siglas** final que explica cada acrónimo usado.
+
+No está ligada a un agente concreto: sigue el formato estándar de [Agent
+Skills](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)
+(un `SKILL.md` con instrucciones + recursos en `references/`, `scripts/` y
+`assets/`) y funciona con cualquier agente de código compatible con ese
+formato.
 
 > Documento orientativo de planificación. No sustituye asesoría legal o
 > regulatoria. Contenido normativo a fecha **septiembre 2026**.
@@ -23,8 +30,9 @@ cobertura del capítulo V del RGPD. Produce un informe de situación en Markdown
 
 ## Requisitos
 
-- **Claude Code** actualizado (las Agent Skills se cargan automáticamente desde
-  `~/.claude/skills/` y `.claude/skills/`).
+- Un **agente de código compatible con Agent Skills** (por ejemplo, entre
+  otros, Claude Code), que las cargue desde su carpeta de skills global o de
+  proyecto.
 - **Python 3.8+** en el PATH — solo para el escáner `scripts/scan_repo.py`. No
   tiene dependencias externas. Si no hay Python, la skill hace un análisis por
   patrones equivalente, más lento.
@@ -44,7 +52,7 @@ y si global o en el proyecto. No hay build ni `npm install`.
 
 ## Uso
 
-En cualquier proyecto que quieras evaluar, pídeselo a Claude Code en lenguaje
+En cualquier proyecto que quieras evaluar, pídeselo a tu agente en lenguaje
 natural, por ejemplo:
 
 - *"Evalúa el estado regulatorio de este proyecto como producto sanitario."*
@@ -53,9 +61,9 @@ natural, por ejemplo:
 - *"Esta app hace una valoración clínica y genera un informe: ¿es producto
   sanitario, de qué clase, necesito organismo notificado y cumplo RGPD?"*
 
-Claude cargará la skill, te preguntará la **finalidad prevista**, ejecutará el
-escáner y entregará el informe `informe-regulatorio-samd-AAAA-MM-DD.md` en la
-raíz del proyecto analizado.
+El agente cargará la skill, te preguntará la **finalidad prevista**, ejecutará
+el escáner y entregará el informe `informe-regulatorio-samd-AAAA-MM-DD.md` en
+la raíz del proyecto analizado, con un índice de siglas al final.
 
 ---
 
@@ -78,6 +86,7 @@ skills/analisis-regulatorio-samd/
     sbom-vulnerabilidades.md       Qué es el SBOM, cuándo obliga, cómo generarlo
     ia-aiact.md                    Reglamento (UE) 2024/1689 para SaMD con IA
     checkpoints-volatiles.md       Lista de contraste web (qué verificar y dónde)
+    glosario-siglas.md             Significado de cada sigla/acrónimo usado en el informe
   assets/plantilla-informe.md      Plantilla del informe de situación
 ```
 
