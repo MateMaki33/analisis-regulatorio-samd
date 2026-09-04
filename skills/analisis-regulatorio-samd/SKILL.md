@@ -1,20 +1,23 @@
 ---
 name: analisis-regulatorio-samd
 description: >-
-  Analiza un proyecto de software frente al Reglamento (UE) 2017/745 (MDR): si es
-  producto sanitario (SaMD / MDSW), su clase de riesgo (I, IIa, IIb, III), la
-  clase de seguridad IEC 62304, la normativa aplicable (MDR, RGPD/LOPDGDD, AI Act,
-  ciberseguridad, evaluación clínica), los organismos implicados y, norma por
-  norma, qué cumple y cómo se gestiona. Indica qué entregables de datos y
-  seguridad debe generar y qué es cada uno (calificación, análisis de riesgos del
-  tratamiento, DPIA, RAT, contratos de encargado, brechas, TIA, transparencia de
-  IA, SBOM), analiza las dependencias y detecta si los datos salen del EEE
-  (regiones no europeas, proxies, CDNs, APIs de IA) y con qué cobertura del
+  Analiza un proyecto de software frente a la normativa de producto sanitario de
+  la UE: si es producto sanitario (SaMD / MDSW) bajo el Reglamento (UE) 2017/745
+  (MDR) o bajo el Reglamento (UE) 2017/746 (IVDR, diagnóstico in vitro), su clase
+  de riesgo (I/IIa/IIb/III en MDR, A/B/C/D en IVDR), la clase de seguridad IEC
+  62304, la normativa aplicable (MDR/IVDR, RGPD/LOPDGDD, AI Act, EHDS/EHR,
+  ciberseguridad, evaluación clínica o del funcionamiento), los organismos
+  implicados y, norma por norma, qué cumple y cómo se gestiona. Indica qué
+  entregables de datos y seguridad debe generar y qué es cada uno (calificación,
+  análisis de riesgos del tratamiento, DPIA, RAT, contratos de encargado,
+  brechas, TIA, transparencia de IA, calificación/marcado CE como sistema EHR
+  bajo el EHDS, SBOM), analiza las dependencias y detecta si los datos salen del
+  EEE (regiones no europeas, proxies, CDNs, APIs de IA) y con qué cobertura del
   capítulo V del RGPD. Contrasta la normativa vigente en fuentes oficiales y
   produce un informe en Markdown. Úsala para evaluar el estado regulatorio de un
-  proyecto en España / UE: clasificación, cumplimiento MDR/RGPD/IA, ruta a
-  marcado CE, entregables de protección de datos, transferencias internacionales
-  o SBOM.
+  proyecto en España / UE: calificación como producto sanitario y clasificación,
+  cumplimiento MDR/IVDR/RGPD/IA/EHDS, ruta a marcado CE, entregables de
+  protección de datos, transferencias internacionales o SBOM.
 ---
 
 # Análisis regulatorio de software sanitario (SaMD) — España / UE
@@ -78,15 +81,17 @@ python skills/analisis-regulatorio-samd/scripts/scan_repo.py <ruta> --json-out <
 Señales relevantes para los pasos nuevos: `posible_transferencia_internacional`,
 `menciona_region_no_eu`, `menciona_proxy_o_cdn`, `tiene_sbom`,
 `tiene_gestion_dependencias`, `fija_versiones_dependencias`,
-`total_dependencias_directas_aprox`; y los grupos `infra_datos.*` y
-`supply_chain.*` en `findings` / `hits_by_category`.
+`total_dependencias_directas_aprox`, `posible_diagnostico_in_vitro`,
+`posible_ehr_o_ehds`; y los grupos `infra_datos.*`, `supply_chain.*`, `ivd.*` y
+`ehds.*` en `findings` / `hits_by_category`.
 
-### 3. ¿Es producto sanitario?
+### 3. ¿Es producto sanitario? ¿MDR o IVDR?
 Carga `references/calificacion-clasificacion.md`. Aplica el test MDCG 2019-11
 combinando la finalidad prevista (paso 1) con las señales del escáner.
 Resultado: **SÍ / NO / FRONTERA (borderline)** + justificación.
 
-- **NO** → evalúa solo normativa horizontal: RGPD/LOPDGDD (paso 6b) y los
+- **NO** → evalúa solo normativa horizontal: RGPD/LOPDGDD (paso 6b), EHDS si
+  trata categorías prioritarias de datos de salud (paso 6c-bis) y los
   entregables de datos y transferencias (paso 6d), y si es "health software" sin
   finalidad médica menciona ISO/IEC 82304-1 y las directrices AEPD de apps de
   salud/bienestar. **Deja constancia de que el "análisis de calificación" es un
@@ -94,13 +99,23 @@ Resultado: **SÍ / NO / FRONTERA (borderline)** + justificación.
   una inspección de AEMPS). Salta al paso 8 (informe reducido, pero mantén la
   tabla de cumplimiento RGPD, el catálogo de entregables, las transferencias
   internacionales y el contraste web de RGPD).
-- **SÍ / FRONTERA** → continúa.
+- **SÍ / FRONTERA** → aplica el árbol "¿MDR o IVDR?" de la misma referencia. Si
+  el resultado es **IVDR** (el software interpreta datos de un examen de
+  muestra humana: `signals.posible_diagnostico_in_vitro` / `ivd.*`), carga
+  además `references/ivdr-diagnostico-in-vitro.md` — sustituye el paso 4 (Regla
+  11 MDR) por la clasificación IVDR (clases A-D) de esa referencia y ajusta el
+  resto del informe (evaluación del funcionamiento en vez de clínica, PER/PMPF
+  en vez de CER/PMCF). Si es **MDR**, continúa con el paso 4 normal.
 
 ### 4. Clasificar
-Con la misma referencia: aplica la **Regla 11** (Anexo VIII MDR) → clase
-**I / IIa / IIb / III** + vía de evaluación (autocertificación vs organismo
-notificado). Asigna también la **clase de seguridad IEC 62304 (A / B / C)**.
-Indica el nivel de confianza y qué datos faltan para cerrarlo.
+Con la misma referencia (o con `ivdr-diagnostico-in-vitro.md` si es IVDR):
+aplica la **Regla 11** (Anexo VIII MDR) → clase **I / IIa / IIb / III** + vía de
+evaluación (autocertificación vs organismo notificado); o las **Reglas 1-7**
+(Anexo VIII IVDR) → clase **A / B / C / D**. Si es MDR clase I, comprueba
+también los subtipos **Is/Im/Ir** (MDCG 2019-15 rev.1) por si hace falta
+intervención parcial de un organismo notificado. Asigna también la **clase de
+seguridad IEC 62304 (A / B / C)** (aplica igual en MDR e IVDR). Indica el nivel
+de confianza y qué datos faltan para cerrarlo.
 
 ### 5. Mapa normativo + CONTRASTE EN INTERNET
 1. Carga `references/normativa-y-organismos.md`. Construye la lista de normas
@@ -115,7 +130,10 @@ Indica el nivel de confianza y qué datos faltan para cerrarlo.
    España; **si hay transferencias fuera del EEE: decisiones de adecuación
    vigentes + estado del EU-US Data Privacy Framework**; **si es MDSW conectado o
    hay componente no-PS: SBOM/MDCG 2019-16 + calendario del Cyber Resilience
-   Act**). Para cada norma anota: **versión/edición vigente, fechas de
+   Act**; **si es IVD (IVDR): normas armonizadas IVDR y revisiones de MDCG
+   2020-16**; **si trata categorías prioritarias de datos de salud (posible
+   sistema EHR): calendario de actos de ejecución del EHDS y autoridad
+   española**). Para cada norma anota: **versión/edición vigente, fechas de
    aplicación, guía MDCG más reciente, URL, fecha de consulta**.
 3. Corrige la tabla del paso 5.1 con lo verificado. Marca explícitamente lo que
    **no** has podido verificar.
@@ -146,6 +164,16 @@ Sub-pasos temáticos (usa las referencias específicas para el detalle):
   `references/ia-aiact.md`: ¿alto riesgo por art. 6.1?, obligaciones arts. 8-17
   con veredicto de cumplimiento, ¿el organismo notificado necesita designación
   AI Act?, fecha de exigibilidad **verificada por web** en el paso 5.
+- **6c-bis. EHDS / sistema EHR** (si `signals.posible_ehr_o_ehds`, `ehds.*`, o
+  el usuario declara que el software almacena/exporta/muestra resumen de
+  paciente, receta/dispensación electrónica, imagen médica e informe, resultado
+  de laboratorio o informe de alta) — `references/ehds-espacio-datos-salud.md`:
+  ¿es "sistema EHR"?, requisitos esenciales del Anexo II (interoperabilidad
+  EEHRxF, seguridad y registro de accesos), declaración/marcado CE propios del
+  EHDS, calendario **verificado por web** en el paso 5, y si hay reutilización
+  de datos con fines de investigación/IA, el régimen de uso secundario
+  (permiso de datos). Recuerda que el EHDS **no sustituye** al MDR/IVDR ni al
+  RGPD: se suma.
 - **6d. Entregables de datos y seguridad, transferencias internacionales y SBOM**
   — carga `references/entregables-datos-y-seguridad.md`,
   `references/transferencias-internacionales.md` y
@@ -154,7 +182,8 @@ Sub-pasos temáticos (usa las referencias específicas para el detalle):
   1. **Catálogo de entregables.** Para cada documento (análisis de calificación
      —incl. "no es PS"—, análisis de riesgos del tratamiento, DPIA/EIPD, RAT,
      DPA por proveedor, procedimiento de brechas, TIA, cláusulas informativas,
-     nota de transparencia de IA, designación de DPO): veredicto **obligatorio /
+     nota de transparencia de IA, designación de DPO, calificación como sistema
+     EHR + declaración/marcado CE EHDS si procede): veredicto **obligatorio /
      recomendado / no aplica** para este proyecto **con el criterio de decisión
      explícito**, estado **presente / parcial / ausente** según el repo, y 1-2
      frases de **qué es** y **cómo se genera / quién lo pide**. Rellena la tabla
@@ -188,11 +217,15 @@ gestiona" y la columna "Fuente verificada (URL + fecha)", la **tabla de
 entregables de datos y seguridad** (sección 7.2: ¿obligatorio aquí?, por qué,
 estado, cómo se genera), la **tabla de flujos de datos / transferencias
 internacionales** (sección 7.5) y el bloque **SBOM y vulnerabilidades** (sección
-6.7). Guarda como `informe-regulatorio-samd-AAAA-MM-DD.md` en la raíz del
-proyecto analizado y envíalo con SendUserFile. El informe debe responder
-explícitamente: en qué acierta el proyecto, en qué grupo/clase entra, a falta de
-qué está, qué documentos debe generar y por qué, si los datos salen de Europa y
-con qué cobertura, y dónde están los riesgos.
+6.7). Si el producto es IVD, incluye la sección **3b (clasificación IVDR)** en
+vez de/además de la 4 (Regla 11 MDR); si trata categorías prioritarias de datos
+de salud, incluye la sección **8b (EHDS / sistema EHR)**. Guarda como
+`informe-regulatorio-samd-AAAA-MM-DD.md` en la raíz del proyecto analizado y
+envíalo con SendUserFile. El informe debe responder explícitamente: en qué
+acierta el proyecto, en qué grupo/clase entra (MDR o IVDR), a falta de qué
+está, qué documentos debe generar y por qué, si los datos salen de Europa y con
+qué cobertura, si es también sistema EHR bajo el EHDS, y dónde están los
+riesgos.
 
 ## Aviso obligatorio en el informe
 Incluir siempre: *documento orientativo de planificación, no sustituye asesoría

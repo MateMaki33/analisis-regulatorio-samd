@@ -39,6 +39,20 @@ gestiona** (proceso → organismo → entregable → plazo/hito).
   (clase I)** o **organismo notificado (IIa/IIb/III)**; autoridad = **AEMPS**.
   Entregable = expediente técnico + DoC. Hito = antes de comercializar.
 
+### IVDR (UE) 2017/746 — solo si el software califica como IVD (no MDR)
+Ver `references/ivdr-diagnostico-in-vitro.md` para el árbol MDR/IVDR y la
+clasificación A-D. Ítems: finalidad prevista documentada; clasificación
+justificada por escrito (Reglas 1-7 Anexo VIII IVDR); RGSF Anexo I IVDR;
+expediente técnico; evaluación del **funcionamiento** (PER) con rendimiento
+analítico y clínico; declaración UE de conformidad; marcado CE.
+- **Evidencia:** igual que MDR — `docs/regulatory/`, README con finalidad,
+  informes de validación analítica/clínica del algoritmo si los hay.
+- **Cómo se gestiona:** evaluación de conformidad por la vía de la clase A-D →
+  declaración + CE. Organismo = **autocertificación (clase A no estéril)** o
+  **organismo notificado con designación IVDR específica** (B/C/D — comprobar
+  en NANDO); autoridad = **AEMPS**. Entregable = expediente técnico + DoC.
+  Hito = antes de comercializar.
+
 ### RD 192/2023 (España)
 - **Ítems:** IFU y etiquetado **en español**; responsable técnico con titulación
   universitaria superior; inscripción en el registro AEMPS que corresponda;
@@ -195,6 +209,28 @@ UE; designación AI Act del organismo notificado.
   España = **AESIA**, coordinada con AEMPS. Entregable = documentación técnica
   ampliada + registro. Hito = fecha de exigibilidad **verificada por web** (muy
   volátil).
+
+### EHDS (UE) 2025/327 — condicional (solo si es "sistema EHR")
+Ver `references/ehds-espacio-datos-salud.md`. Ítems: análisis de calificación
+como sistema EHR (categorías prioritarias tratadas + rol del software);
+requisitos esenciales del Anexo II (interoperabilidad vía EEHRxF, seguridad y
+registro de accesos); documentación técnica (art. 37); declaración UE de
+conformidad + marcado CE propios del EHDS (art. 39/41); registro en la base de
+datos UE de sistemas EHR (art. 49); si hay reutilización de datos, permiso de
+datos ante el organismo de acceso (uso secundario, Cap. IV).
+- **Evidencia:** `ehds.*`, `clinical.estandares_salud` + `clinical.dominio_clinico`;
+  presencia de exportación/importación en formatos estándar (HL7 FHIR, IPS);
+  `access log` de historia clínica.
+- **Cómo se gestiona:** interno (documentación técnica + pruebas de los
+  componentes armonizados) → declaración + marcado CE EHDS → registro en la
+  base de datos UE. Organismo = autoridad de vigilancia del mercado de
+  sistemas EHR (a designar en España — verificar); para uso secundario,
+  organismo de acceso a los datos de salud. Hito = componentes armonizados
+  obligatorios desde **principios de 2029/2031** según categoría (verificar
+  calendario exacto — checkpoint EHDS).
+- **Veredicto típico:** con un análisis solo de repositorio, normalmente
+  "No evaluable" o "Cumple parcialmente" salvo evidencia clara de exportación
+  en formato estándar y de registro de accesos.
 
 ### Horizontales condicionales
 - **Cyber Resilience Act (UE) 2024/2847:** solo relevante para componentes que

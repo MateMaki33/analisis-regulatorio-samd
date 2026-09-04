@@ -1,18 +1,20 @@
 # analisis-regulatorio-samd
 
 Skill de [Claude Code](https://claude.com/claude-code) que analiza un proyecto de
-software y lo sitúa frente a la normativa de **producto sanitario** (SaMD / MDSW)
-en España y la UE: calificación (MDCG 2019-11), clasificación de riesgo
-(Regla 11 MDR), clase IEC 62304, mapa normativo con contraste en fuentes
-oficiales, veredicto de cumplimiento norma por norma, vulnerabilidades RGPD y
-ruta a marcado CE. Dice además **qué entregables de datos y seguridad debe
-generar el proyecto y qué es cada uno** (análisis de calificación como "no
-producto sanitario", análisis de riesgos del tratamiento, DPIA/EIPD, RAT,
-DPA/contratos de encargado, procedimiento de brechas, TIA, nota de transparencia
-sobre uso de IA, SBOM y gestión de vulnerabilidades), analiza las **dependencias**
-y detecta si los **datos salen del EEE** (regiones cloud no europeas, proxies,
-CDNs, APIs de IA) y con qué cobertura del capítulo V del RGPD. Produce un informe
-de situación en Markdown.
+software y lo sitúa frente a la normativa de **producto sanitario** (SaMD / MDSW,
+incluido diagnóstico in vitro) y de **historia clínica electrónica** en España y
+la UE: calificación (MDCG 2019-11) con enrutado **MDR vs. IVDR**, clasificación
+de riesgo (Regla 11 MDR o Reglas 1-7 IVDR), clase IEC 62304, mapa normativo con
+contraste en fuentes oficiales, veredicto de cumplimiento norma por norma,
+vulnerabilidades RGPD y ruta a marcado CE. Dice además **qué entregables de
+datos y seguridad debe generar el proyecto y qué es cada uno** (análisis de
+calificación como "no producto sanitario", análisis de riesgos del tratamiento,
+DPIA/EIPD, RAT, DPA/contratos de encargado, procedimiento de brechas, TIA, nota
+de transparencia sobre uso de IA, calificación/marcado CE como sistema EHR bajo
+el **Espacio Europeo de Datos Sanitarios (EHDS)**, SBOM y gestión de
+vulnerabilidades), analiza las **dependencias** y detecta si los **datos salen
+del EEE** (regiones cloud no europeas, proxies, CDNs, APIs de IA) y con qué
+cobertura del capítulo V del RGPD. Produce un informe de situación en Markdown.
 
 > Documento orientativo de planificación. No sustituye asesoría legal o
 > regulatoria. Contenido normativo a fecha **septiembre 2026**.
@@ -48,6 +50,8 @@ natural, por ejemplo:
 - *"Evalúa el estado regulatorio de este proyecto como producto sanitario."*
 - *"¿Esto es un SaMD? ¿Qué clase MDR y qué me falta para el marcado CE?"*
 - *"Revisa el cumplimiento RGPD y las vulnerabilidades de datos de salud."*
+- *"Esta app hace una valoración clínica y genera un informe: ¿es producto
+  sanitario, de qué clase, necesito organismo notificado y cumplo RGPD?"*
 
 Claude cargará la skill, te preguntará la **finalidad prevista**, ejecutará el
 escáner y entregará el informe `informe-regulatorio-samd-AAAA-MM-DD.md` en la
@@ -62,7 +66,9 @@ skills/analisis-regulatorio-samd/
   SKILL.md                         Orquestación y flujo (lo que Claude lee primero)
   scripts/scan_repo.py             Escáner estático → JSON compacto (Python 3.8+)
   references/
-    calificacion-clasificacion.md  Test MDCG 2019-11 + Regla 11 + clase 62304
+    calificacion-clasificacion.md  Test MDCG 2019-11 (MDR/IVDR) + Regla 11 + clase 62304
+    ivdr-diagnostico-in-vitro.md   Calificación y clasificación IVDR (clases A-D)
+    ehds-espacio-datos-salud.md    Espacio Europeo de Datos Sanitarios (sistema EHR)
     normativa-y-organismos.md      Todas las normas y quién es cada organismo
     requisitos-tecnicos.md         Qué exige cada norma y cómo se acredita
     evaluacion-cumplimiento.md     Rúbrica: veredicto por norma + cómo se gestiona

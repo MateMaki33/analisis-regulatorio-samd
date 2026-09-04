@@ -1,22 +1,30 @@
 # analisis-regulatorio-samd
 
 Skill de Claude Code para analizar un proyecto de software y situarlo frente a la
-normativa de **producto sanitario** (SaMD / MDSW) en España y la UE.
+normativa de **producto sanitario** (SaMD / MDSW, incluido diagnóstico in vitro)
+y de **historia clínica electrónica** (EHDS) en España y la UE.
 
 ## Qué hace
 
 1. Escanea el repositorio (script sin dependencias) y produce un JSON de señales:
    dominio clínico, datos personales y de categoría especial (RGPD art. 9), uso de
    IA/ML, terceros receptores de datos, vulnerabilidades de seguridad,
-   **infraestructura y salida de datos del EEE** (regiones cloud, proxies, CDNs) y
-   **cadena de suministro** (dependencias, lockfiles, SBOM, SCA en CI, CVD).
-2. Aplica el test de **calificación** (MDCG 2019-11): ¿es producto sanitario?
-3. **Clasifica** por riesgo (Regla 11, Anexo VIII MDR): I / IIa / IIb / III, y
-   asigna la clase de seguridad IEC 62304 (A / B / C).
-4. Construye el **mapa normativo**: MDR + RD 192/2023, guías MDCG, normas
-   armonizadas (13485, 14971, 62304, 62366-1, 81001-5-1), evaluación clínica,
-   EUDAMED/UDI, PMS, y horizontales (RGPD/LOPDGDD, AI Act, CRA, NIS2) — con
-   obligatoriedad, implicaciones y organismo para cada una.
+   **infraestructura y salida de datos del EEE** (regiones cloud, proxies, CDNs),
+   **cadena de suministro** (dependencias, lockfiles, SBOM, SCA en CI, CVD),
+   **señales de diagnóstico in vitro** (ensayos de laboratorio, biomarcadores) y
+   **señales de historia clínica / EHDS** (categorías prioritarias de datos,
+   interoperabilidad, registro de accesos).
+2. Aplica el test de **calificación** (MDCG 2019-11): ¿es producto sanitario? Si
+   lo es, ¿cae bajo el **MDR** (Reglamento (UE) 2017/745) o bajo el **IVDR**
+   (Reglamento (UE) 2017/746, diagnóstico in vitro)?
+3. **Clasifica** por riesgo: Regla 11 (Anexo VIII MDR) → I / IIa / IIb / III, o
+   Reglas 1-7 (Anexo VIII IVDR) → A / B / C / D; asigna la clase de seguridad
+   IEC 62304 (A / B / C) y, si es clase I MDR, comprueba los subtipos Is/Im/Ir
+   (MDCG 2019-15) que exigen intervención parcial de un organismo notificado.
+4. Construye el **mapa normativo**: MDR/IVDR + RD 192/2023, guías MDCG, normas
+   armonizadas (13485, 14971, 62304, 62366-1, 81001-5-1), evaluación clínica o
+   del funcionamiento, EUDAMED/UDI, PMS, y horizontales (RGPD/LOPDGDD, AI Act,
+   EHDS, CRA, NIS2) — con obligatoriedad, implicaciones y organismo para cada una.
 5. **Contrasta en internet** (fuentes oficiales: EUR-Lex, DOUE, BOE, AEMPS,
    Comisión, AEPD, CCN, AESIA) el estado vigente de cada norma aplicable: fechas
    de aplicación, edición que da presunción de conformidad, guías MDCG nuevas,
@@ -29,10 +37,11 @@ normativa de **producto sanitario** (SaMD / MDSW) en España y la UE.
 6b. Determina **qué entregables de datos y seguridad debe generar** el proyecto y
    si son obligatorios (análisis de calificación —incl. "no es PS"—, análisis de
    riesgos del tratamiento, DPIA/EIPD, RAT, DPA/art. 28, procedimiento de brechas,
-   TIA, nota de transparencia de IA, DPO), qué es cada uno y cómo se genera;
-   construye la **tabla de flujos de datos** (¿salen del EEE?, mecanismo del
-   cap. V, ¿TIA?); y decide si el **SBOM** y la **gestión de vulnerabilidades**
-   son obligatorios, con inventario de dependencias y comando de generación.
+   TIA, nota de transparencia de IA, DPO, calificación/declaración-marcado CE como
+   sistema EHR bajo el EHDS), qué es cada uno y cómo se genera; construye la
+   **tabla de flujos de datos** (¿salen del EEE?, mecanismo del cap. V, ¿TIA?); y
+   decide si el **SBOM** y la **gestión de vulnerabilidades** son obligatorios,
+   con inventario de dependencias y comando de generación.
 7. Ordena las brechas en una **ruta a la conformidad** por fases.
 8. Redacta un **informe de situación** en Markdown (`assets/plantilla-informe.md`)
    y lo entrega al usuario.
@@ -43,7 +52,9 @@ normativa de **producto sanitario** (SaMD / MDSW) en España y la UE.
 SKILL.md                         Orquestación y flujo (lo que Claude lee primero)
 scripts/scan_repo.py             Escáner estático → JSON compacto
 references/
-  calificacion-clasificacion.md  Test MDCG 2019-11 + Regla 11 + clase 62304
+  calificacion-clasificacion.md  Test MDCG 2019-11 (MDR/IVDR) + Regla 11 + clase 62304
+  ivdr-diagnostico-in-vitro.md   Calificación y clasificación IVDR (clases A-D)
+  ehds-espacio-datos-salud.md    Espacio Europeo de Datos Sanitarios (sistema EHR)
   normativa-y-organismos.md      Todas las normas y quién es cada organismo
   requisitos-tecnicos.md         Qué exige cada norma y cómo se acredita
   evaluacion-cumplimiento.md     Rúbrica: veredicto por norma + cómo se gestiona

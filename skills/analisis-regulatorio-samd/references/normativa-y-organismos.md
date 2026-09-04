@@ -39,8 +39,12 @@ Convención de obligatoriedad:
 - **Organismo:** AEMPS (y comunidades autónomas en inspección/publicidad).
 
 ### Guías MDCG — referencia obligada (no vinculantes pero aplicadas)
-- **MDCG 2019-11 Rev.1**: calificación y clasificación de software. (paso 3–4)
-- **MDCG 2021-24 Rev.1**: clasificación, incl. función de medición.
+- **MDCG 2019-11 Rev.1**: calificación y clasificación de software (MDR **e**
+  IVDR). (paso 3–4)
+- **MDCG 2021-24 Rev.1**: clasificación MDR, incl. función de medición.
+- **MDCG 2020-16 rev.4**: clasificación IVDR (clases A-D, Reglas 1-7).
+- **MDCG 2019-15 rev.1**: guía para fabricantes de productos de clase I
+  (pasos para comercializar, subtipos Is/Im/Ir).
 - **MDCG 2019-16 Rev.1**: ciberseguridad de productos sanitarios.
 - **MDCG 2020-1**: evaluación clínica / de funcionamiento de MDSW.
 - **MDCG 2020-3 Rev.1**: cambios significativos (art. 120 MDR).
@@ -48,6 +52,27 @@ Convención de obligatoriedad:
 - **MDCG 2018-1 / 2019-5**: UDI y Basic UDI-DI para software.
 - **Organismo:** las aplican organismos notificados y AEMPS. No se "presentan":
   se siguen y se documenta la conformidad con su criterio.
+
+### Reglamento (UE) 2017/746 (IVDR) — OBLIGATORIA si el software encaja como IVD
+- **Qué es:** norma matriz de productos sanitarios para diagnóstico in vitro,
+  directamente aplicable desde 26-may-2022. Estructura paralela al MDR:
+  clasificación por riesgo propia (Anexo VIII IVDR, clases A/B/C/D), RGSF
+  (Anexo I IVDR), documentación técnica, evaluación del **funcionamiento**
+  (no evaluación clínica), EUDAMED, PMS.
+- **Cuándo aplica en vez del MDR:** cuando el software interpreta/analiza
+  datos derivados de un **examen de una muestra humana** (sangre, orina,
+  tejido, ácidos nucleicos…) con fines diagnósticos/pronósticos/de
+  compatibilidad — ver el árbol de decisión y el detalle completo en
+  `references/ivdr-diagnostico-in-vitro.md`.
+- **Implica:** análisis de calificación y clasificación IVDR por escrito;
+  RGSF del Anexo I IVDR; documentación técnica; **evaluación del
+  funcionamiento** (PER) con **PMPF**; SGC (ISO 13485); gestión de riesgos
+  (ISO 14971); ciclo de vida (IEC 62304); declaración UE de conformidad;
+  marcado CE.
+- **Organismo:** clase A (no estéril) → autocertificación; **B/C/D →
+  organismo notificado con designación IVDR** (verificar en NANDO que cubre
+  IVDR, no solo MDR — son designaciones independientes). Autoridad
+  competente: **AEMPS**.
 
 ---
 
@@ -187,6 +212,27 @@ SGSI de alcance organizativo. No obligatoria por ley, pero habitualmente exigida
 por hospitales y aseguradoras en contratación, y facilita el cumplimiento de
 NIS2 y de las medidas de seguridad del RGPD.
 
+### Reglamento (UE) 2025/327 (EHDS — Espacio Europeo de Datos Sanitarios) — CONDICIONAL
+Detalle en `references/ehds-espacio-datos-salud.md`. Aplica si el software
+almacena, intermedia, exporta, importa, convierte, edita o muestra datos de
+**categorías prioritarias** (resumen del paciente, receta/dispensación
+electrónica, imagen médica e informe, resultado de laboratorio, informe de
+alta) — es decir, si es (o incluye) un **"sistema EHR"**, sea o no también
+producto sanitario. Resumen: requisitos esenciales de interoperabilidad
+(EEHRxF) y de seguridad/registro de accesos (Anexo II); documentación técnica;
+declaración UE de conformidad y **marcado CE propio del EHDS** (coexiste con
+el del MDR/IVDR si también es PS); registro en la base de datos UE de sistemas
+EHR. Componentes armonizados obligatorios desde **principios de 2029 / 2031**
+según categoría (calendario sujeto a actos de ejecución — **verificar**). Si
+además hay **reutilización de datos con fines de investigación/entrenamiento
+de IA** (uso secundario, Capítulo IV EHDS), se necesita un **permiso de
+datos** ante el organismo de acceso a los datos de salud.
+- **Organismo:** autoridades de vigilancia del mercado de sistemas EHR
+  designadas por cada Estado (en España, aún por confirmar — **verificar**);
+  organismo de acceso a los datos de salud para uso secundario. No confundir
+  con la AEPD (protección de datos, uso primario) ni con AEMPS/organismo
+  notificado (MDR/IVDR).
+
 ---
 
 ## 7. Organismos — quién es quién
@@ -202,6 +248,8 @@ NIS2 y de las medidas de seguridad del RGPD.
 | **AESIA** | Agencia Española de Supervisión de la IA | Vigilancia del AI Act en España |
 | **CCN-CNI / INCIBE** | Ciberseguridad nacional | NIS2, notificación de incidentes de ciberseguridad, esquemas de certificación |
 | **Panel de expertos UE (MDCG/Comisión)** | Escrutinio clínico (CECP) | Determinados productos IIb y clase III |
+| **Autoridad de vigilancia del mercado de sistemas EHR (España, a designar)** | Vigilancia de sistemas EHR bajo el EHDS | Conformidad con el Anexo II EHDS, registro de sistemas EHR — **verificar designación** |
+| **Organismo de acceso a los datos de salud (España, a designar)** | Uso secundario de datos de salud (EHDS Cap. IV) | Permisos de datos para investigación/IA sobre datos de salud reutilizados — **verificar designación** |
 
 ### Coste orientativo de certificación (clase IIa–III)
 Cifras de mercado citadas por consultoras (no tarifas oficiales; confirmar con

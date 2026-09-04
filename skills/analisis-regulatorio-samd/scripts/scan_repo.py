@@ -146,6 +146,25 @@ CONSENT_PATTERNS = {
     "consentimiento": _rx(r"\b(consentimiento\s+(informado|expl[ií]cito)|informed\s+consent|opt-?in|acepta[r]?\s+t[eé]rminos|privacy\s+policy|pol[ií]tica\s+de\s+privacidad|GDPR|RGPD|data\s+protection|DPIA|EIPD|derecho\s+de\s+supresi|right\s+to\s+erasure|anonimizaci|seud[oó]nim|pseudonym)\b"),
 }
 
+# Diagnóstico in vitro (posible encaje en IVDR (UE) 2017/746 en vez de / además
+# del MDR): especímenes, ensayos de laboratorio, marcadores, resultados crudos
+# de instrumentos de laboratorio que el software interpreta.
+IVD_PATTERNS = {
+    "especimen_ensayo": _rx(r"\b(esp[eé]cimen|specimen|muestra\s+(de\s+)?(sangre|orina|saliva|tejido|suero|plasma)|blood\s+sample|urine\s+sample|assay|ensayo\s+(cl[ií]nico|de\s+laboratorio)|reactivo|reagent|analito|analyte|biomarcador|biomarker|marcador\s+tumoral|tumor\s+marker|companion\s+diagn|diagn[oó]stico\s+ac[oó]mpañante|in\s*[- ]?vitro\s+diagnos|dispositivo\s+de\s+diagn[oó]stico\s+in\s*vitro)\b"),
+    "instrumento_laboratorio": _rx(r"\b(ELISA|PCR|qPCR|RT-?PCR|citometr[ií]a\s+de\s+flujo|flow\s+cytometry|espectrofot[oó]metro|spectrophotomet|inmunoensayo|immunoassay|hemograma|blood\s+count|cultivo\s+microbiol|microbiological\s+culture|antibiograma|susceptibility\s+testing|patolog[ií]a\s+anat[oó]mica|histopatolog|blot\s+pattern|optical\s+density|densidad\s+[oó]ptica|Ct\s+value|umbral\s+de\s+ciclo)\b"),
+    "genetica_secuenciacion": _rx(r"\b(secuenciaci[oó]n|sequencing|NGS|next[- ]generation\s+sequencing|panel\s+gen[eé]tico|genetic\s+panel|variant\s+calling|cariotipo|karyotyp|HLA\s+typing|tipaje\s+HLA)\b"),
+}
+
+# Espacio Europeo de Datos Sanitarios (EHDS) — Reglamento (UE) 2025/327:
+# categorías prioritarias de datos (art. 14) que convierten al software en
+# "sistema EHR" a efectos del cap. III, y componentes armonizados (EEHRxF,
+# registro de accesos).
+EHDS_PATTERNS = {
+    "categoria_prioritaria": _rx(r"\b(resumen\s+de\s+paciente|patient\s+summary|receta\s+electr[oó]nica|electronic\s+prescription|e-?prescription|dispensaci[oó]n\s+electr[oó]nica|e-?dispensation|informe\s+de\s+alta|discharge\s+(report|summary)|informe\s+de\s+imagen\s+m[eé]dica|imaging\s+report|resultado(s)?\s+de\s+laboratorio|laboratory\s+results?)\b"),
+    "interoperabilidad_ehr": _rx(r"\b(EEHRxF|European\s+Electronic\s+Health\s+Record\s+Exchange\s+Format|formato\s+europeo\s+de\s+intercambio|historia\s+cl[ií]nica\s+electr[oó]nica|electronic\s+health\s+record\s+system|sistema\s+(de\s+)?EHR|MyHealth@EU|IPS\s+(HL7\s+)?International\s+Patient\s+Summary)\b"),
+    "registro_acceso_ehr": _rx(r"\b(access\s+log|registro\s+de\s+accesos?\s+a\s+(la\s+)?historia\s+cl[ií]nica|audit\s+log.*(historia\s+cl[ií]nic|health\s+record)|log\s+de\s+auditor[ií]a\s+cl[ií]nic)\b"),
+}
+
 # Infraestructura y salida de datos del EEE (transferencias internacionales).
 INFRA_DATOS_PATTERNS = {
     "region_no_eu": _rx(
@@ -202,6 +221,8 @@ ALL_GROUPS = {
     "privacy_controls": CONSENT_PATTERNS,
     "infra_datos": INFRA_DATOS_PATTERNS,
     "supply_chain": SUPPLY_CHAIN_PATTERNS,
+    "ivd": IVD_PATTERNS,
+    "ehds": EHDS_PATTERNS,
 }
 
 
@@ -424,6 +445,12 @@ def main():
         "total_dependencias_directas_aprox": sum(
             result["supply_chain"]["dependency_counts"].values()
         ) or None,
+        # --- IVDR (diagnóstico in vitro) y EHDS (historia clínica / interoperabilidad) ---
+        "posible_diagnostico_in_vitro": any_hit("ivd."),
+        "posible_ehr_o_ehds": any_hit("ehds.") or (
+            hbc.get("clinical.estandares_salud", 0) > 0
+            and hbc.get("clinical.dominio_clinico", 0) > 0
+        ),
     }
 
     out = json.dumps(result, ensure_ascii=False, indent=2)

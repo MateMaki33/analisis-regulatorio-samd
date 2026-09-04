@@ -2,10 +2,11 @@
 
 - **Fecha del análisis:** {AAAA-MM-DD}
 - **Ámbito de comercialización asumido:** España / UE
-- **Fuentes normativas de referencia:** MDR (UE) 2017/745, RD 192/2023, guías MDCG,
-  normas UNE-EN/ISO/IEC, RGPD (UE) 2016/679 + LOPDGDD, AI Act (UE) 2024/1689.
+- **Fuentes normativas de referencia:** MDR (UE) 2017/745 {o IVDR (UE) 2017/746 si
+  aplica}, RD 192/2023, guías MDCG, normas UNE-EN/ISO/IEC, RGPD (UE) 2016/679 +
+  LOPDGDD, AI Act (UE) 2024/1689, EHDS (UE) 2025/327 {si aplica}.
 - **Fecha del contraste normativo en internet:** {AAAA-MM-DD}
-- **Puntos verificados en internet:** {lista: EUDAMED, normas armonizadas DOUE, guías MDCG, AI Act, AEPD apps salud, NIS2 España, decisiones de adecuación + EU-US Data Privacy Framework, SBOM/MDCG 2019-16 + Cyber Resilience Act… con URL}. {o "ninguno: producto sin datos personales ni finalidad sanitaria"}
+- **Puntos verificados en internet:** {lista: EUDAMED, normas armonizadas DOUE, guías MDCG, AI Act, AEPD apps salud, NIS2 España, decisiones de adecuación + EU-US Data Privacy Framework, SBOM/MDCG 2019-16 + Cyber Resilience Act, normas armonizadas IVDR/MDCG 2020-16, calendario EHDS + autoridad española… con URL}. {o "ninguno: producto sin datos personales ni finalidad sanitaria"}
 
 > **Aviso.** Documento orientativo de planificación. No sustituye asesoría legal o
 > regulatoria. La clasificación vinculante y la evaluación de conformidad las
@@ -17,9 +18,11 @@
 ## 1. Resumen ejecutivo
 
 - **¿Es producto sanitario (MDSW)?** {SÍ / NO / FRONTERA} — {1-2 frases}
-- **Clase MDR (Regla 11):** {I / IIa / IIb / III} — confianza {alta/media/baja}
+- **¿MDR o IVDR?** {MDR / IVDR / n. a.} — {1 frase de justificación si es IVDR}
+- **Clase MDR (Regla 11) o IVDR (Reglas 1-7):** {I / IIa / IIb / III · o · A / B / C / D} — confianza {alta/media/baja}
 - **Clase de seguridad IEC 62304:** {A / B / C}
 - **¿Sistema de IA de alto riesgo (AI Act)?** {sí / no / n. a.}
+- **¿Es también "sistema EHR" (EHDS)?** {sí / no / n. a.} — {1 frase}
 - **Vía de evaluación de conformidad:** {autocertificación / organismo notificado}
 - **Nivel de madurez regulatoria estimado:** {inicial / parcial / avanzado} — {%
   aproximado de elementos cubiertos}
@@ -52,7 +55,18 @@
 
 ---
 
-## 4. Clasificación por riesgo (Regla 11, Anexo VIII MDR)
+## 3b. ¿MDR o IVDR? {incluir solo si el producto es SÍ/FRONTERA en la sección 3}
+
+- Aplicación del árbol MDR/IVDR (MDCG 2019-11 Rev.1, Figura 2): {pasos y resultado}
+- **Conclusión:** {MDR / IVDR} — {justificación}
+- Si es **IVDR**: la sección 4 de este informe se sustituye por la
+  clasificación IVDR (clases A-D, Reglas 1-7 Anexo VIII IVDR — ver
+  `references/ivdr-diagnostico-in-vitro.md`), y en la sección 5 "evaluación
+  clínica (CER)" se sustituye por "evaluación del funcionamiento (PER + PMPF)".
+
+---
+
+## 4. Clasificación por riesgo (Regla 11, Anexo VIII MDR — o Reglas 1-7 IVDR si aplica)
 
 - Eje "importancia de la información": {informa / orienta decisión / diagnostica-trata}
 - Eje "criticidad del cuadro / paciente": {no grave / grave / crítico-vital}
@@ -70,8 +84,9 @@
 
 | Norma / Reglamento | Obligatoriedad | Veredicto | Evidencia (`fichero:línea` o "no encontrado") | Brecha concreta | Cómo se gestiona (proceso · organismo · entregable · hito) | Fuente verificada (URL · fecha) |
 |---|---|---|---|---|---|---|
-| MDR (UE) 2017/745 | Obligatoria | {} | {} | {} | Evaluación de conformidad por la vía de la clase → declaración UE + marcado CE · {autocertificación / organismo notificado}; autoridad AEMPS · expediente técnico + DoC · antes de comercializar | {} |
+| MDR (UE) 2017/745 {o IVDR si aplica} | Obligatoria | {} | {} | {} | Evaluación de conformidad por la vía de la clase → declaración UE + marcado CE · {autocertificación / organismo notificado}; autoridad AEMPS · expediente técnico + DoC · antes de comercializar | {} |
 | RD 192/2023 | Obligatoria (ES) | {} | {} | {} | IFU/etiquetado en español + responsable técnico titulado + alta en registro AEMPS · AEMPS · registro CCPS / Responsables · previo al mercado ES | {} |
+| EHDS (UE) 2025/327 {si es sistema EHR; si no, omitir fila} | Condicional | {} | {} | {} | Requisitos esenciales Anexo II (interoperabilidad EEHRxF + seguridad/registro de accesos) → declaración + marcado CE EHDS → registro en base de datos UE · autoridad de vigilancia EHR (a designar) · documentación técnica + declaración · componentes armonizados desde 2029/2031 {verificar} | {} |
 | ISO 13485:2016 | {De facto IIa+ / Recom. I} | {} | {} | {} | Implantar SGC → auditoría de certificación · organismo notificado · certificado ISO 13485 (~3 años) · antes de la evaluación de conformidad | {} |
 | ISO 14971:2019 | De facto | {} | {} | {} | Proceso de gestión de riesgos continuo enlazado a 62304/62366-1/ciberseg. · el ON audita · Risk Management File · revisión antes de cada liberación | {} |
 | IEC 62304 (clase {A/B/C}) | De facto | {} | {} | {} | Procesos de ciclo de vida en el tooling + doc. de proceso · el ON muestrea trazabilidad · expediente de desarrollo + SBOM · durante el desarrollo | {} |
@@ -232,6 +247,28 @@ Para cada documento 🔴: *"Qué es: … · Cómo se genera: …"*.
   | Exactitud / robustez / ciberseguridad (art. 15) | {…} | {ai_ml.dataset_sesgo, explicabilidad} |
 - Organismo notificado: ¿tiene designación AI Act? {verificar}
 - GPAI de terceros usados: {…}
+
+---
+
+## 8b. EHDS — sistema EHR (Reglamento (UE) 2025/327) — {aplica / no aplica}
+
+- **¿Es "sistema EHR"?** {sí/no} — categorías prioritarias tratadas:
+  {resumen del paciente / receta-dispensación electrónica / imagen médica e
+  informe / resultado de laboratorio / informe de alta} — rol del software:
+  {almacena / intermedia / exporta / importa / convierte / edita / visualiza}
+- **Requisitos esenciales (Anexo II):**
+  | Requisito | Estado | Evidencia / brecha |
+  |---|---|---|
+  | Generales (funciona según lo previsto, seguridad del paciente) | {…} | {…} |
+  | Interoperabilidad (EEHRxF, sin restricciones de acceso/exportación) | {…} | {ehds.interoperabilidad_ehr} |
+  | Seguridad y registro de accesos | {…} | {ehds.registro_acceso_ehr} |
+- **Declaración UE de conformidad + marcado CE EHDS:** {obligatorio/no} — estado {…}
+- **Registro en la base de datos UE de sistemas EHR:** {hecho/pendiente}
+- **Calendario de exigibilidad** (verificado {fecha} · {URL}): componentes
+  armonizados desde {principios de 2029 / 2031 según categoría — o "verificar"}
+- **Uso secundario de datos de salud** (investigación / entrenamiento de IA con
+  datos reutilizados): {aplica/no} — {permiso de datos pendiente/obtenido}
+- **Relación con MDR/IVDR y RGPD:** el EHDS se **suma**, no sustituye
 
 ---
 

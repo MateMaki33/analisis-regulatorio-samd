@@ -15,7 +15,8 @@ documentos (son documentales y externos al código). El valor está en decir
 
 - **Qué es:** documento que aplica el test de MDCG 2019-11 y concluye, por
   escrito y con justificación, si el software **es o no** producto sanitario
-  (y, si lo es, su clase).
+  (y, si lo es, **si cae bajo MDR o bajo IVDR** — ver
+  `references/ivdr-diagnostico-in-vitro.md` — y su clase).
 - **¿Obligatorio?** **Siempre**, incluso cuando la conclusión es **"NO es
   producto sanitario"**. Es lo primero que pide un organismo notificado o la
   AEMPS en una inspección, y la defensa del fabricante frente a la acusación de
@@ -208,7 +209,29 @@ concreta (verificar por web).
 - **Entregable:** nombramiento; publicación de los datos de contacto del DPO;
   **comunicación a la AEPD** (sede electrónica).
 
-## 11. SBOM · 12. Gestión de vulnerabilidades + VEX + CVD
+## 11. Análisis de calificación como sistema EHR + declaración/marcado CE EHDS
+
+- **Qué es:** ver `references/ehds-espacio-datos-salud.md`. Documento que
+  determina si el software es "sistema EHR" (trata categorías prioritarias de
+  datos de salud) y, si lo es, el expediente para su declaración UE de
+  conformidad y marcado CE **propios del EHDS** (Reglamento (UE) 2025/327),
+  distintos del marcado CE del MDR/IVDR aunque puedan coexistir.
+- **¿Obligatorio?** El **análisis de calificación** como sistema EHR: siempre
+  que se traten datos de categorías prioritarias (resumen del paciente,
+  receta/dispensación electrónica, imagen médica e informe, resultado de
+  laboratorio, informe de alta), igual criterio de honestidad que el análisis
+  MDR: documentarlo aunque la conclusión sea "no es sistema EHR". La
+  **declaración + marcado CE EHDS**: obligatoria si la conclusión es "sí" y el
+  producto se comercializa, con calendario de exigibilidad de los componentes
+  armonizados aún por confirmar (principios de 2029/2031 — verificar).
+- **Quién lo exige:** autoridad de vigilancia del mercado de sistemas EHR
+  (a designar en España).
+- **Cómo se genera:** interno; requiere pruebas de los componentes
+  armonizados (interoperabilidad EEHRxF, registro de accesos) antes de
+  comercializar (art. 40 EHDS).
+- **Escáner:** `ehds.*`, `signals.posible_ehr_o_ehds`.
+
+## 12. SBOM · 13. Gestión de vulnerabilidades + VEX + CVD
 
 Ver `references/sbom-vulnerabilidades.md`. Resumen de decisión:
 - **MDSW conectado o que procesa datos → SBOM y gestión de vulnerabilidades
@@ -235,8 +258,9 @@ Ver `references/sbom-vulnerabilidades.md`. Resumen de decisión:
 | 8 | Cláusulas informativas / privacidad en capas | {} | RGPD 12-14 | {} | Interno |
 | 9 | Nota de transparencia sobre uso de IA | {} | RGPD 13-14/22 · AI Act 13/50 | {} | Interno · IFU · AESIA/AEPD |
 | 10 | Designación de DPO | {} | RGPD 37-39 · LOPDGDD 34 | {} | Nombramiento + comunicación a la AEPD |
-| 11 | SBOM (CycloneDX / SPDX) | {} | MDCG 2019-16 · IEC 81001-5-1 · (CRA) | {} | Herramienta por stack; entregar al ON por versión |
-| 12 | Gestión de vulnerabilidades + VEX + CVD | {} | ídem · RGPD 32 | {} | SCA en CI + vigilancia CVE poscomercialización |
+| 11 | Calificación como sistema EHR + declaración/marcado CE EHDS | {} | Reglamento (UE) 2025/327 (EHDS) | {} | Interno · autoridad de vigilancia EHR |
+| 12 | SBOM (CycloneDX / SPDX) | {} | MDCG 2019-16 · IEC 81001-5-1 · (CRA) | {} | Herramienta por stack; entregar al ON por versión |
+| 13 | Gestión de vulnerabilidades + VEX + CVD | {} | ídem · RGPD 32 | {} | SCA en CI + vigilancia CVE poscomercialización |
 
 Rellenar y añadir una frase por documento obligatorio: *"Qué es: … · Cómo se
 genera: …"*.
