@@ -43,7 +43,7 @@ sistema EHR** a efectos del EHDS, aunque trate datos de salud a otros efectos
 Reglamento (UE) 2019/1020: quien fabrica el sistema, o lo manda diseñar/
 fabricar, y lo comercializa bajo su nombre o marca.
 
-### Señales del escáner → interpretación
+### Señales de la exploración (paso 2) → interpretación
 - `signals.posible_ehr_o_ehds`, `ehds.categoria_prioritaria`,
   `ehds.interoperabilidad_ehr`, `ehds.registro_acceso_ehr` → indicio de sistema
   EHR.

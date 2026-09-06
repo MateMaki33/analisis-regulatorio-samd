@@ -35,8 +35,11 @@
 - **Finalidad prevista declarada:** {texto}
 - **Usuarios y entorno de uso:** {profesional / paciente / investigación; entorno}
 - **Qué hace con los datos:** {registra / muestra / calcula / interpreta / predice / decide}
-- **Stack y componentes** (del escáner): {lenguajes, frameworks, IA, terceros}
+- **Stack y componentes** (de la exploración del repo): {lenguajes, frameworks, IA, terceros}
 - **Evidencia clave del repositorio:** {fichero:línea → qué demuestra}
+- **Cobertura de la exploración:** {nº de ficheros leídos íntegramente, carpetas
+  excluidas (`node_modules`, `dist`...), y si se alcanzó el límite de 80
+  ficheros por categoría — en ese caso, qué se priorizó y qué quedó fuera}
 
 ---
 
@@ -202,6 +205,9 @@ Para cada documento 🔴: *"Qué es: … · Cómo se genera: …"*.
 | Ley 41/2002 (si historia clínica) | {…} | |
 
 ### 7.4 Vulnerabilidades detectadas (priorizadas)
+*Descripción = qué es el hallazgo, nunca el valor literal del secreto o dato
+personal (p. ej. "API key de Stripe en texto plano", no la clave en sí).*
+
 | # | Severidad | Categoría | Ubicación | Descripción | Norma afectada | Remediación |
 |---|---|---|---|---|---|---|
 | 1 | {Crítica/Alta/Media} | {secreto / TLS / log PII / inyección / tercero / cifrado reposo / dependencia con CVE} | {fichero:línea} | {…} | {RGPD 32 / IEC 81001-5-1 / …} | {…} |

@@ -31,7 +31,7 @@ documentos (son documentales y externos al código). El valor está en decir
   funcionalidad).
 - **Cómo se genera:** interno; contrastar con el *Manual on Borderline*; en duda,
   consulta a AEMPS. Se archiva en `docs/regulatory/`.
-- **Escáner:** `signals.senal_finalidad_medica`, `clinical.*`. Ausencia de este
+- **Exploración (paso 2):** `signals.senal_finalidad_medica`, `clinical.*`. Ausencia de este
   análisis en `docs/` = brecha a listar.
 
 ## 2. Análisis de riesgos del tratamiento (RGPD arts. 24 y 32)
@@ -53,7 +53,7 @@ documentos (son documentales y externos al código). El valor está en decir
   motivada sobre si procede DPIA**.
 - **Cómo se genera:** interno, con el DPO si lo hay; herramienta AEPD
   *Gestiona/EVALÚA*.
-- **Escáner:** `signals.trata_pii`, `signals.categorias_especiales_rgpd`,
+- **Exploración (paso 2):** `signals.trata_pii`, `signals.categorias_especiales_rgpd`,
   `ai_ml.*`, `third_party.*`, `infra_datos.*`.
 
 ## 3. DPIA / EIPD — Evaluación de Impacto relativa a la Protección de Datos (art. 35)
@@ -229,7 +229,7 @@ concreta (verificar por web).
 - **Cómo se genera:** interno; requiere pruebas de los componentes
   armonizados (interoperabilidad EEHRxF, registro de accesos) antes de
   comercializar (art. 40 EHDS).
-- **Escáner:** `ehds.*`, `signals.posible_ehr_o_ehds`.
+- **Exploración (paso 2):** `ehds.*`, `signals.posible_ehr_o_ehds`.
 
 ## 12. SBOM · 13. Gestión de vulnerabilidades + VEX + CVD
 

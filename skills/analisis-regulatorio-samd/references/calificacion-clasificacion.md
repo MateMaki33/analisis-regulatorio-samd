@@ -43,7 +43,7 @@ para otro PS. Ante duda → contrastar con el *Manual on Borderline* y con el
 organismo notificado, y **redactar un análisis de calificación por escrito**
 (es lo primero que se pide en evaluación de conformidad).
 
-### Señales del escáner → interpretación
+### Señales de la exploración (paso 2) → interpretación
 - `signals.senal_finalidad_medica` / `clinical.diagnostico` / `clinical.soporte_decision`
   / `clinical.tratamiento_dosis` / `clinical.pronostico_riesgo` → indicio fuerte de MDSW.
 - `clinical.estandares_salud` (HL7/FHIR/DICOM/SNOMED) → contexto clínico, pero por

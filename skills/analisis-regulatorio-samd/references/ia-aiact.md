@@ -106,7 +106,7 @@ información necesaria para cumplir los arts. 8-17.
 
 - ¿Es sistema de IA? ¿Rol del proyecto?
 - Categoría AI Act (con justificación art. 6.1 vía MDR).
-- Lista de obligaciones arts. 8-17 con estado (según escáner: ¿hay logging?
+- Lista de obligaciones arts. 8-17 con estado (según la exploración: ¿hay logging?
   ¿explicabilidad `ai_ml.explicabilidad`? ¿control de sesgo `ai_ml.dataset_sesgo`?
   ¿supervisión humana en el flujo?).
 - Requisito de designación AI Act del organismo notificado.

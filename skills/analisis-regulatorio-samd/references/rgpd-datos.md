@@ -2,7 +2,7 @@
 
 Objetivo del paso: (a) mapear las obligaciones de protección de datos que aplican
 al proyecto y (b) producir una **lista de vulnerabilidades concretas** con
-`fichero:línea` a partir del JSON del escáner.
+`fichero:línea` a partir de los ficheros leídos en la exploración del paso 2.
 
 > **Entregables y transferencias.** Para decidir *qué documentos debe generar el
 > proyecto y si son obligatorios* (análisis de calificación, análisis de riesgos
@@ -61,11 +61,14 @@ de pacientes y usuarios de la sanidad".
 
 ## C. Catálogo de vulnerabilidades → cómo reportarlas
 
-Recorre el JSON del escáner y clasifica cada hallazgo. Para cada uno reporta:
-`categoría · fichero:línea · extracto · riesgo · norma afectada · remediación`.
+Recorre los hallazgos de la exploración del paso 2 y clasifica cada uno. Para cada uno reporta:
+`categoría · fichero:línea · descripción genérica · riesgo · norma afectada · remediación`.
+**"Descripción genérica" nunca es el valor literal** si es un secreto o un dato
+personal real (ver "Manejo seguro de lo que encuentres" en
+`patrones-busqueda.md`) — describe qué es, no lo reproduzcas.
 
 ### C.1 Datos sensibles expuestos / mal tratados
-| Señal escáner | Vulnerabilidad | Riesgo | Norma |
+| Categoría (paso 2) | Vulnerabilidad | Riesgo | Norma |
 |---|---|---|---|
 | `logging_pii.log_datos` | PII / datos de salud / credenciales escritos en logs | Persistencia no controlada, acceso indebido, retención | RGPD 5.1.f, 32; IEC 81001-5-1 |
 | `special_category.*` en ficheros de test/seed/fixtures | Datos reales de salud en datos de prueba o en el repo | Exposición en control de versiones | RGPD 5, 32; 25 |
@@ -73,7 +76,7 @@ Recorre el JSON del escáner y clasifica cada hallazgo. Para cada uno reporta:
 | Ausencia de `privacy_controls.*` en todo el repo | Sin evidencia de consentimiento, política de privacidad, borrado o seudonimización | RGPD 7, 13-14, 17, 25 |
 
 ### C.2 Seguridad (también alimentan ISO 14971 + IEC 81001-5-1)
-| Señal escáner | Vulnerabilidad | Norma |
+| Categoría (paso 2) | Vulnerabilidad | Norma |
 |---|---|---|
 | `security.secreto_hardcoded`, `security.aws_key`, `security.clave_privada`, `security.jwt_literal` | Secretos/credenciales en el código o en el repo | RGPD 32; IEC 81001-5-1; buenas prácticas OWASP |
 | `security.tls_desactivado`, `security.http_inseguro` | Datos (posiblemente de salud) en claro por la red | RGPD 32; MDR Anexo I.17 |
@@ -85,7 +88,7 @@ Recorre el JSON del escáner y clasifica cada hallazgo. Para cada uno reporta:
 ### C.3 Terceros y transferencias
 Detalle completo y tabla de flujos de datos en `transferencias-internacionales.md`.
 
-| Señal escáner | Vulnerabilidad | Norma |
+| Categoría (paso 2) | Vulnerabilidad | Norma |
 |---|---|---|
 | `third_party.analitica`, `third_party.crash_repo`, `third_party.publicidad` | SDKs que exfiltran datos de uso/dispositivo; en apps de salud el `analitica`+`publicidad` suele ser incompatible con art. 9 | RGPD 6, 9, 28, 44; Directrices AEPD apps de salud |
 | `third_party.nube_datos` / endpoints fuera del EEE | Encargado sin contrato art. 28 / transferencia internacional sin garantías | RGPD 28, 44-49 |
@@ -111,8 +114,8 @@ Detalle completo y tabla de flujos de datos en `transferencias-internacionales.m
    `entregables-datos-y-seguridad.md`): por documento, ¿obligatorio aquí? + por
    qué + estado + cómo se genera.
 4. **Lista priorizada de vulnerabilidades** (crítica / alta / media) con
-   `fichero:línea` y remediación concreta, incluyendo dependencias con CVE si el
-   escáner o el usuario aportan datos.
+   `fichero:línea` y remediación concreta, incluyendo dependencias con CVE si
+   `scan_repo.py` (paso 6d) o el usuario aportan datos.
 5. **DPIA: ¿exigible?** (sí/no + por qué) y si procede consulta previa a la AEPD;
    antes, **análisis de riesgos del tratamiento** (siempre).
 6. **Tabla de flujos de datos / transferencias internacionales** (de

@@ -64,8 +64,9 @@ explicar **cómo generarlo**.
 
 ## 3. Inventario de dependencias (a partir del repo)
 
-Trabaja sobre `manifests` y `supply_chain` del JSON del escáner — **no** leas
-árboles de dependencias completos:
+Ejecuta `scripts/scan_repo.py <ruta> --json-out <scratch>/deps.json` y trabaja
+sobre `manifests` y `supply_chain` de su JSON — **no** leas árboles de
+dependencias completos a mano:
 
 1. **Enumerar dependencias directas** por manifiesto: `package.json`
    (`dependencies` + `devDependencies`), `requirements.txt` / `pyproject.toml`,
@@ -129,7 +130,7 @@ de vigilancia CVE y de parcheo, y que la información de seguridad para el usuar
 
 ---
 
-## 5. Señales del escáner
+## 5. Señales de `scan_repo.py`
 
 - `manifests` → base del inventario; `supply_chain.dependency_counts` → nº de
   dependencias directas por manifiesto.

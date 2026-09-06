@@ -111,9 +111,14 @@ certificada y cubre la categoría de datos tratada.
 
 ## 5. Cómo detectarlo en el repositorio
 
-Del JSON del escáner (`infra_datos.*`, `third_party.*`, `ai_ml.llm_apis`) y de
-**3-5 ficheros de configuración** (`.env` / `.env.example`, `docker-compose*.yml`,
-`*.tf` / IaC, `config/`, `helm/`, `serverless.yml`):
+De la exploración del paso 2 (`infra_datos.*`, `third_party.*`, `ai_ml.llm_apis`)
+y de los ficheros de configuración ya leídos enteros por ser de lectura
+obligatoria (`.env` / `.env.example`, `docker-compose*.yml`, `*.tf` / IaC,
+`config/`, `helm/`, `serverless.yml`). **Estos ficheros suelen tener secretos
+reales del usuario** (contraseñas, API keys) junto a la señal de región que
+buscas: sigue la regla de manejo seguro de `patrones-busqueda.md` — cita el
+nombre de variable y el host/región, nunca el valor de nada que parezca
+credencial.
 
 - **`infra_datos.region_no_eu`** — regiones cloud no europeas en código, config o
   IaC: `us-east-1`, `us-west-2`, `ap-southeast-1`, `sa-east-1`, `us-central1`,

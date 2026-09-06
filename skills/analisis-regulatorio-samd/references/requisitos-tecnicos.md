@@ -1,7 +1,7 @@
 # Requisitos técnicos — qué exige cada norma, cómo se cumple, ante quién
 
 Para cada norma: **en qué consiste**, **entregables**, **cómo se hace / ante qué
-organismo**, y **señales del escáner** que permiten presumir cumplimiento parcial.
+organismo**, y **señales de la exploración (paso 2)** que permiten presumir cumplimiento parcial.
 
 ---
 
@@ -94,8 +94,8 @@ organismo**, y **señales del escáner** que permiten presumir cumplimiento parc
   build reproducible, pruebas automatizadas con informe, versionado semántico y
   changelog. El **organismo notificado revisa la documentación de proceso** y
   muestrea trazabilidad requisito→código→prueba→riesgo.
-- **Escáner:** `languages` (stack), `manifests` (dependencias = base del
-  inventario SOUP/SBOM), `model_files`. Comprueba en el repo: ¿hay carpeta de
+- **Exploración (paso 2) / `scan_repo.py`:** `languages` (stack), `manifests`
+  (dependencias = base del inventario SOUP/SBOM), `model_files`. Comprueba en el repo: ¿hay carpeta de
   tests?, ¿CI?, ¿changelog?, ¿fichero de requisitos? Su ausencia = brechas
   concretas de 62304 a listar por clase.
 
