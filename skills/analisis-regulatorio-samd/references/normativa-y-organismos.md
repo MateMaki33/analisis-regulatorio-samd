@@ -182,9 +182,13 @@ sujeto a evaluación por organismo notificado (típicamente IIa+) es **alto ries
 por el art. 6.1 → obligaciones de gestión de riesgos de IA, gobernanza de datos,
 documentación y logging, transparencia, supervisión humana, exactitud/robustez/
 ciberseguridad. La evaluación de conformidad de IA se **integra** en la del MDR
-(el organismo notificado debe tener designación también para IA).
+(el organismo notificado debe tener designación también para IA). Régimen
+sancionador: topes del art. 99 del Reglamento (hasta 15 M€ / 3 % por
+obligaciones de alto riesgo; 35 M€ / 7 % por prácticas prohibidas) + ley
+nacional de gobernanza de la IA en tramitación — ver `ia-aiact.md` §7.
 - **Organismo:** organismo notificado (integrado con MDR) + autoridad nacional de
-  vigilancia de IA (en España se articula en torno a **AESIA**) + AI Office (UE).
+  vigilancia de mercado de IA — para SaMD con IA es **AEMPS** (art. 74.3 del
+  Reglamento); **AESIA** coordina y es el punto de contacto único — + AI Office (UE).
 
 ### Reglamento (UE) 2024/2847 (Cyber Resilience Act) — CONDICIONAL
 Productos con elementos digitales. Los PS ya cubiertos por los requisitos de
@@ -245,7 +249,7 @@ datos** ante el organismo de acceso a los datos de salud.
 | **AEPD** | Autoridad de control de protección de datos | DPIA de alto riesgo (consulta previa), inspección, sanción, directrices de apps de salud |
 | **CEIm** | Comité de ética de la investigación con medicamentos | Dictamen de investigaciones clínicas |
 | **Comisión Europea / EUDAMED** | Gestión de la base de datos y guías MDCG | Registro UE, SRN, UDI, certificados |
-| **AESIA** | Agencia Española de Supervisión de la IA | Vigilancia del AI Act en España |
+| **AESIA** | Agencia Española de Supervisión de la IA | Coordinación y punto de contacto único del AI Act en España; representación en el Comité Europeo de IA; vigilancia del mercado con carácter general (para SaMD con IA la ejerce **AEMPS**, art. 74.3); régimen sancionador (arts. 99 Reglamento + ley nacional en tramitación) |
 | **CCN-CNI / INCIBE** | Ciberseguridad nacional | NIS2, notificación de incidentes de ciberseguridad, esquemas de certificación |
 | **Panel de expertos UE (MDCG/Comisión)** | Escrutinio clínico (CECP) | Determinados productos IIb y clase III |
 | **Autoridad de vigilancia del mercado de sistemas EHR (España, a designar)** | Vigilancia de sistemas EHR bajo el EHDS | Conformidad con el Anexo II EHDS, registro de sistemas EHR — **verificar designación** |

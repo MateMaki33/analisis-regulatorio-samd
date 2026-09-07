@@ -94,13 +94,117 @@ información necesaria para cumplir los arts. 8-17.
 - Estándares armonizados de IA (CEN-CENELEC JTC 21): en desarrollo; su
   disponibilidad condiciona la fecha efectiva de exigibilidad.
 
-## 7. España
+## 7. España — autoridades y régimen sancionador nacional
 
-- **AESIA** (Agencia Española de Supervisión de la Inteligencia Artificial):
-  autoridad de vigilancia del mercado para IA.
-- Para SaMD, la vigilancia se coordina con **AEMPS**.
-- Anteproyecto de ley nacional de "buen uso y gobernanza de la IA" en tramitación
-  (régimen sancionador, sandbox regulatorio). Verificar estado.
+> **Volátil.** La ley nacional de IA está en tramitación; cuantías, tipos
+> infractores y reparto de autoridades pueden cambiar. Verificar por web antes
+> de concluir (checkpoint 7).
+
+### 7.1 AESIA y el reparto de autoridades de vigilancia
+
+- **AESIA** (Agencia Española de Supervisión de la Inteligencia Artificial),
+  creada por el **RD 729/2023** con Estatuto propio; sede en A Coruña; adscrita
+  a la Secretaría de Estado de Digitalización e IA (Ministerio para la
+  Transformación Digital y de la Función Pública). Operativa desde 2024.
+- Funciones bajo el Reglamento (UE) 2024/1689: **autoridad nacional de
+  coordinación**, **punto de contacto único** frente a la Comisión / Oficina
+  Europea de IA, **representante de España en el Comité Europeo de IA**, y
+  autoridad de vigilancia del mercado con carácter **general/residual**.
+- **Reparto por sectores** (art. 74 del Reglamento + anteproyecto de ley):
+  - **Productos sanitarios con IA → la autoridad de vigilancia del mercado es la
+    AEMPS**, no AESIA. El **art. 74.3** del Reglamento atribuye la vigilancia del
+    AI Act, para productos cubiertos por la legislación de armonización del
+    Anexo I secc. A (incluye MDR e IVDR), a la autoridad ya designada por esa
+    legislación. AESIA coordina; **AEMPS vigila e inspecciona** el sistema de IA
+    embebido en el SaMD, dentro de su procedimiento de vigilancia del MDR.
+  - **AEPD**: identificación y categorización biométrica, migración / asilo /
+    gestión de fronteras, y usos en el ámbito policial.
+  - **CGPJ**: IA en la Administración de Justicia. **Junta Electoral Central**:
+    IA en procesos electorales. **Banco de España / CNMV / DGSFP**: IA de alto
+    riesgo en entidades financieras.
+- La **evaluación de conformidad** del sistema de IA de alto riesgo la sigue
+  haciendo el **organismo notificado del MDR con designación AI Act** (art.
+  43.3). Ninguna de estas autoridades "certifica" el producto.
+
+### 7.2 Ley nacional de IA — estado
+
+- **Anteproyecto de Ley para el buen uso y la gobernanza de la Inteligencia
+  Artificial**, aprobado en Consejo de Ministros el **11-mar-2025** (primera
+  vuelta). Contenido: designación de autoridades competentes, **régimen
+  sancionador** propio, refuerzo de la transparencia (etiquetado de contenido
+  sintético) y encaje del **sandbox** regulatorio (RD 817/2023).
+- Tramitación pendiente: dictámenes (Consejo de Estado, AEPD…), aprobación como
+  proyecto de ley y paso por las Cortes. **Verificar si se ha publicado en BOE**
+  y su fecha de entrada en vigor.
+- Mientras la ley no esté en vigor, AESIA y AEMPS ejercen funciones de
+  **vigilancia** (requerir documentación, inspeccionar, ordenar medidas
+  correctoras o la retirada), pero la **potestad sancionadora plena** depende de
+  la habilitación y el procedimiento que fije la ley nacional.
+
+### 7.3 Cuantías del Reglamento (art. 99) — aplicables desde 2-ago-2026
+
+Multas máximas (la mayor de la cifra o el porcentaje del volumen de negocio
+total anual mundial del ejercicio anterior):
+
+| Infracción | Tope |
+|---|---|
+| Prácticas prohibidas (art. 5) | **35.000.000 € o 7 %** |
+| Incumplimiento de obligaciones de operadores u organismos notificados — incluye las de sistemas de **alto riesgo** (arts. 8-17) y de transparencia (art. 50) | **15.000.000 € o 3 %** |
+| Información incorrecta, incompleta o engañosa a organismos notificados o autoridades | **7.500.000 € o 1 %** |
+| Proveedores de **GPAI** (art. 101, la impone la Comisión) | 15.000.000 € o 3 % |
+
+Para **pymes y empresas emergentes** se aplica el **menor** de la cifra o el
+porcentaje. Graduación: gravedad y duración de la infracción, tamaño del
+operador, reincidencia, cooperación con la autoridad, medidas correctoras
+adoptadas.
+
+### 7.4 Régimen sancionador nacional (anteproyecto — cifras a verificar)
+
+La ley española tipifica infracciones **propias** (adicionales a las del art. 99)
+y las clasifica en leves / graves / muy graves. Según el texto difundido:
+
+- **Muy graves:** uso de un sistema de IA incurso en prácticas prohibidas (art.
+  5); incumplir el requerimiento de retirada o cese ordenado por la autoridad;
+  no comunicar un **incidente grave** cuando exista obligación.
+- **Graves:** no implantar el sistema de gestión de riesgos de IA; incumplir la
+  **supervisión humana**; no conservar la documentación técnica ni los registros
+  (logs); no **registrar** el sistema de alto riesgo en la base de datos UE;
+  incumplir el **marcado / etiquetado de contenido generado o manipulado con
+  IA** (deepfakes, contenido sintético); incumplir las instrucciones de
+  transparencia hacia el usuario.
+- **Leves:** desatención no sustancial de requerimientos de la autoridad;
+  defectos formales en la información.
+
+Horquillas propuestas para las infracciones propias (no las que ya derivan del
+art. 99): del orden de **hasta 500.000 € (leves)**, **500.001 – 7.500.000 € o
+2 % (graves)** y hasta las cuantías del art. 99 para las muy graves. **Estas
+cifras y tipos no son definitivos — confirmar el texto vigente.**
+
+Sanciones no pecuniarias posibles: **retirada del mercado** o prohibición de
+comercialización del sistema, orden de puesta en conformidad en plazo,
+publicidad de la sanción.
+
+### 7.5 Otras obligaciones nacionales en la órbita de AESIA
+
+- **Alfabetización en IA** (art. 4 del Reglamento, exigible desde 2-feb-2025): el
+  operador debe garantizar competencia suficiente del personal que maneja el
+  sistema. Documentar la formación impartida.
+- **Sandbox** regulatorio de IA (RD 817/2023): entorno controlado de pruebas
+  gestionado por AESIA; participar da acompañamiento pero **no exime** de
+  cumplir ni blinda frente a sanción.
+
+### 7.6 Qué reflejar en el informe
+
+- Autoridad de vigilancia aplicable al producto (**AEMPS** para SaMD con IA;
+  AESIA como coordinadora) y organismo notificado con designación AI Act.
+- Estado de la ley nacional (en tramitación / en vigor), con URL y fecha de
+  consulta.
+- Exposición sancionadora: qué tope del art. 99 aplicaría al incumplimiento
+  detectado (normalmente **15 M€ / 3 %** por obligaciones de alto riesgo;
+  35 M€ / 7 % solo si hubiera práctica prohibida).
+- Si el software **genera contenido** (texto, informes, imágenes) con IA:
+  verificar la obligación de etiquetado del art. 50 y su tipificación como
+  infracción grave en la ley nacional.
 
 ## 8. Salida esperada del paso
 
@@ -110,4 +214,9 @@ información necesaria para cumplir los arts. 8-17.
   ¿explicabilidad `ai_ml.explicabilidad`? ¿control de sesgo `ai_ml.dataset_sesgo`?
   ¿supervisión humana en el flujo?).
 - Requisito de designación AI Act del organismo notificado.
+- Autoridad de vigilancia aplicable (**AEMPS** para SaMD con IA; AESIA coordina) y
+  exposición sancionadora del incumplimiento detectado según el art. 99
+  (15 M€ / 3 % por obligaciones de alto riesgo; 35 M€ / 7 % por prácticas
+  prohibidas), más el estado —verificado por web— de la ley nacional de
+  gobernanza de la IA.
 - Fecha de exigibilidad aplicable (la confirmada por web) y qué hacer ya.

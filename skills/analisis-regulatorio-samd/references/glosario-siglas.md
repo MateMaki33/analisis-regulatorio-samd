@@ -92,11 +92,18 @@ limitado a esta lista cerrada.
 
 | Sigla | Significado |
 |---|---|
-| AESIA | Agencia Española de Supervisión de Inteligencia Artificial |
+| AESIA | Agencia Española de Supervisión de Inteligencia Artificial (RD 729/2023); coordinación y punto de contacto único del AI Act en España |
+| AI Office / Oficina Europea de IA | Unidad de la Comisión Europea que supervisa los GPAI y coordina la aplicación del AI Act |
+| CGPJ | Consejo General del Poder Judicial — autoridad de vigilancia del AI Act para sistemas de IA en la Administración de Justicia |
+| CNMV | Comisión Nacional del Mercado de Valores — autoridad de vigilancia del AI Act para IA de alto riesgo en el ámbito de los mercados de valores |
+| Comité Europeo de IA | Órgano de gobernanza del AI Act formado por representantes de los Estados miembros (art. 65 del Reglamento) |
+| DGSFP | Dirección General de Seguros y Fondos de Pensiones — autoridad de vigilancia del AI Act para IA de alto riesgo en el sector asegurador |
 | GPAI | General-Purpose AI — modelo de IA de propósito general |
 | IA | Inteligencia Artificial |
+| JEC | Junta Electoral Central — autoridad de vigilancia del AI Act para sistemas de IA en procesos electorales |
 | LLM | Large Language Model — modelo de lenguaje de gran tamaño |
 | ML | Machine Learning — aprendizaje automático |
+| SEDIA | Secretaría de Estado de Digitalización e Inteligencia Artificial (Ministerio para la Transformación Digital y de la Función Pública); AESIA está adscrita a ella |
 
 ## EHDS / historia clínica electrónica
 

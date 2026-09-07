@@ -205,10 +205,13 @@ UE; designación AI Act del organismo notificado.
   → art. 12; `model_files` en repo → riesgo de memorización de datos personales.
 - **Cómo se gestiona:** evaluación de conformidad **integrada en la del MDR**
   (art. 43.3 AI Act), sin doble certificación, pero el **organismo notificado
-  debe tener designación específica para el AI Act**. Autoridad de vigilancia en
-  España = **AESIA**, coordinada con AEMPS. Entregable = documentación técnica
-  ampliada + registro. Hito = fecha de exigibilidad **verificada por web** (muy
-  volátil).
+  debe tener designación específica para el AI Act**. Autoridad de vigilancia del
+  mercado en España: para SaMD con IA, **AEMPS** (art. 74.3 del Reglamento);
+  **AESIA** coordina y es el punto de contacto único. Régimen sancionador: topes
+  del art. 99 (hasta **15 M€ / 3 %** por obligaciones de alto riesgo; 35 M€ / 7 %
+  solo si hay práctica prohibida) + ley nacional en tramitación — detalle en
+  `ia-aiact.md` §7. Entregable = documentación técnica ampliada + registro.
+  Hito = fecha de exigibilidad **verificada por web** (muy volátil).
 
 ### EHDS (UE) 2025/327 — condicional (solo si es "sistema EHR")
 Ver `references/ehds-espacio-datos-salud.md`. Ítems: análisis de calificación
